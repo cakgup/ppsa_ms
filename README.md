@@ -1,7 +1,7 @@
 # 🕌 PPSA Management System
 
 <p align="center">
-  <img src="assets/logo.png" alt="Logo PPSA" width="140">
+  <img src="https://github.com/cakgup/ppsa/blob/main/assets/logo.png" alt="Logo PPSA" width="140">
 </p>
 
 <p align="center">
