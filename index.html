@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PPSA Management System</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+  <main id="loginPage" class="login-shell">
+    <section class="login-card">
+      <div class="brand-mark">PPSA</div>
+      <h1>Manajemen PPSA</h1>
+      <p>Sistem informasi pesantren, pembelajaran, keuangan, dakwah, dan administrasi.</p>
+      <form id="loginForm">
+        <label>Email</label>
+        <input name="email" value="admin@ppsa.local" autocomplete="username" required />
+        <label>Password</label>
+        <input name="password" type="password" value="Admin12345!" autocomplete="current-password" required />
+        <button class="btn-primary">Masuk Dashboard</button>
+        <p id="loginError" class="error"></p>
+      </form>
+      <small>Mode demo dapat berjalan tanpa API. Untuk produksi, sambungkan ke Cloudflare Worker.</small>
+    </section>
+  </main>
+
+  <main id="appPage" class="app-shell hidden">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-icon">م</div>
+        <div><strong>PPSA</strong><span>Management System</span></div>
+      </div>
+      <div id="nav" class="nav"></div>
+    </aside>
+
+    <section class="workspace">
+      <header class="topbar">
+        <div>
+          <h1 id="pageTitle">Dashboard</h1>
+          <p id="pageSubtitle">Ringkasan operasional PPSA</p>
+        </div>
+        <div class="topbar-actions">
+          <span id="userInfo" class="user-pill"></span>
+          <button id="logoutBtn" class="btn-secondary">Logout</button>
+        </div>
+      </header>
+      <section id="content" class="content"></section>
+    </section>
+  </main>
+
+  <div id="modal" class="modal hidden"></div>
+  <script src="assets/config.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>
