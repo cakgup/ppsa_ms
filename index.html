@@ -3,9 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="PPSA Management System, sistem informasi manajemen pesantren untuk santri, akademik, keuangan, tahfidz, administrasi, dan operasional lembaga." />
+  <meta name="theme-color" content="#166534" />
   <title>PPSA Management System</title>
   <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="stylesheet" href="assets/styles.css" />
+  <link rel="stylesheet" href="assets/styles.css?v=20260603" />
 </head>
 <body>
   <main id="loginPage" class="login-shell">
@@ -19,7 +21,7 @@
         <label>Password</label>
         <input name="password" type="password" value="Admin12345!" autocomplete="current-password" required />
         <button class="btn-primary">Masuk Dashboard</button>
-        <p id="loginError" class="error"></p>
+        <p id="loginError" class="error" aria-live="polite"></p>
       </form>
       <small>Mode demo dapat berjalan tanpa API. Untuk produksi, sambungkan ke Cloudflare Worker.</small>
     </section>
@@ -28,7 +30,7 @@
   <main id="appPage" class="app-shell hidden">
     <aside class="sidebar">
       <div class="sidebar-brand">
-        <div class="brand-icon">م</div>
+        <div class="brand-icon">MS</div>
         <div><strong>PPSA</strong><span>Management System</span></div>
       </div>
       <div id="nav" class="nav"></div>
@@ -36,6 +38,7 @@
 
     <section class="workspace">
       <header class="topbar">
+        <button id="menuBtn" class="menu-btn" type="button" aria-label="Buka menu">Menu</button>
         <div>
           <h1 id="pageTitle">Dashboard</h1>
           <p id="pageSubtitle">Ringkasan operasional PPSA</p>
@@ -45,12 +48,13 @@
           <button id="logoutBtn" class="btn-secondary">Logout</button>
         </div>
       </header>
+      <div id="notice" class="notice hidden" role="status"></div>
       <section id="content" class="content"></section>
     </section>
   </main>
 
   <div id="modal" class="modal hidden"></div>
-  <script src="assets/config.js"></script>
-  <script src="assets/app.js"></script>
+  <script src="assets/config.js?v=20260603"></script>
+  <script src="assets/app.js?v=20260603"></script>
 </body>
 </html>
