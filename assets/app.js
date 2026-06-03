@@ -18,6 +18,7 @@ const groups = [
   ["Keuangan", [["cash", "Buku Kas", "Ready"], ["payments", "SPP/Iuran", "Ready"], ["donors", "Donatur/Infaq", "Ready"]]],
   ["Operasional", [["activities", "Kegiatan", "Ready"], ["letters", "Surat Menyurat", "Ready"], ["library", "Perpustakaan", "Ready"], ["dormitories", "Asrama/Kamar", "Ready"], ["inventory", "Inventaris", "Ready"]]],
   ["Media & Dakwah", [["contents", "Pengumuman/Artikel", "Ready"], ["gallery", "Galeri", "Demo"]]],
+  ["Inbox Publik", [["admissions", "Leads Pendaftaran", "Ready"], ["contact_messages", "Pesan Masuk", "Ready"], ["donation_confirmations", "Konfirmasi Donasi", "Ready"]]],
   ["Pengembangan V4", [["lms", "LMS Pembelajaran", "Soon"], ["whatsapp", "WhatsApp Gateway", "Soon"], ["ai", "AI Chatbot", "Soon"], ["mobile", "Mobile App", "Soon"]]],
   ["Sistem", [["users", "User & Role", "Ready"], ["audit", "Audit Log", "Ready"], ["settings", "Pengaturan", "Demo"], ["backup", "Backup", "Soon"]]]
 ];
@@ -41,6 +42,9 @@ const meta = {
   library: { title: "Perpustakaan", subtitle: "Buku, peminjaman, dan pengembalian", cols: ["id", "book_code", "title", "author", "stock", "available"], fields: ["book_code", "title", "author", "category", "stock", "available", "location"] },
   dormitories: { title: "Asrama/Kamar", subtitle: "Penempatan santri dan kapasitas kamar", cols: ["id", "room_name", "building", "capacity", "occupied", "supervisor"], fields: ["room_name", "building", "capacity", "occupied", "supervisor", "notes"] },
   inventory: { title: "Inventaris", subtitle: "Aset barang, kondisi, dan lokasi", cols: ["id", "asset_code", "name", "category", "location", "condition_status"], fields: ["asset_code", "name", "category", "location", "condition_status", "purchase_year", "notes"] },
+  admissions: { title: "Leads Pendaftaran", subtitle: "Form minat santri baru dari portal publik", cols: ["id", "created_at", "student_name", "guardian_name", "phone", "program", "follow_up_status"], fields: ["student_name", "gender", "birth_date", "guardian_name", "phone", "program", "address", "notes", "follow_up_status", "follow_up_notes", "handled_by", "handled_at"] },
+  contact_messages: { title: "Pesan Masuk", subtitle: "Pesan publik dari halaman kontak portal", cols: ["id", "created_at", "name", "contact", "subject", "follow_up_status"], fields: ["name", "contact", "subject", "message", "follow_up_status", "follow_up_notes", "handled_by", "handled_at"] },
+  donation_confirmations: { title: "Konfirmasi Donasi", subtitle: "Konfirmasi transfer dan donasi dari portal publik", cols: ["id", "created_at", "donor_name", "phone", "amount", "follow_up_status"], fields: ["donor_name", "phone", "amount", "method", "notes", "follow_up_status", "follow_up_notes", "handled_by", "handled_at"] },
   users: { title: "User & Role", subtitle: "Akun pengguna dan hak akses sistem", cols: ["id", "name", "email", "role", "status"], fields: ["name", "email", "role", "status"] },
   audit: { title: "Audit Log", subtitle: "Jejak aktivitas pengguna", cols: ["id", "created_at", "user_name", "action", "module", "description"], fields: ["created_at", "user_name", "action", "module", "description"] }
 };
@@ -59,7 +63,10 @@ const labels = {
   letter_date: "Tanggal Surat", sender_receiver: "Pengirim/Penerima", subject: "Perihal", summary: "Ringkasan",
   book_code: "Kode Buku", author: "Penulis", stock: "Stok", available: "Tersedia", room_name: "Kamar",
   building: "Gedung", occupied: "Terisi", supervisor: "Pembina", asset_code: "Kode Aset", condition_status: "Kondisi",
-  purchase_year: "Tahun Beli", email: "Email", role: "Role", created_at: "Waktu", user_name: "User", action: "Aksi", module: "Modul"
+  purchase_year: "Tahun Beli", email: "Email", role: "Role", created_at: "Waktu", user_name: "User", action: "Aksi", module: "Modul",
+  relation: "Relasi", occupation: "Pekerjaan", program: "Program", contact: "Kontak", message: "Pesan",
+  donor_name: "Donatur", method: "Metode", follow_up_status: "Status Follow Up", follow_up_notes: "Catatan Follow Up",
+  handled_by: "Ditangani Oleh", handled_at: "Ditangani Pada"
 };
 
 const seedDemo = {
@@ -425,6 +432,7 @@ function field(name, value = "") {
   if (name === "gender") return select(name, value, ["L", "P", "-"]);
   if (name === "type") return select(name, value, ["masuk", "keluar", "Masuk", "Keluar"]);
   if (name === "status") return select(name, value, ["aktif", "nonaktif", "terjadwal", "selesai", "hadir", "izin", "sakit", "alpa", "lunas", "belum_lunas", "terkirim", "draft", "baik", "rusak"]);
+  if (name === "follow_up_status") return select(name, value, ["baru", "diproses", "selesai", "ditutup"]);
   if (name === "is_published") return select(name, value, [1, 0]);
 
   const numberFields = ["amount", "paid_amount", "total_donation", "last_donation", "stock", "available", "capacity", "occupied", "score", "purchase_year"];

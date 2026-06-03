@@ -39,7 +39,7 @@ button, input, select, textarea { font: inherit; }
 .brand { display: flex; align-items: center; gap: 12px; }
 .brand img { width: 54px; height: 54px; border-radius: 50%; object-fit: contain; background: white; }
 .brand strong { display: block; line-height: 1.2; }
-.brand small { color: var(--green); font-weight: 800; letter-spacing: .05em; }
+.brand small { color: var(--green); font-weight: 400; letter-spacing: .05em; }
 .site-nav { display: flex; align-items: center; gap: 18px; font-weight: 750; color: #244135; }
 .site-nav a:hover { color: var(--green); }
 .nav-pill {
