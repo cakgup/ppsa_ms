@@ -391,6 +391,16 @@ textarea {
   justify-content: space-between;
 }
 
+.topbar-actions {
+  justify-content: flex-end;
+}
+
+.topbar-actions .btn-secondary,
+.topbar-actions .btn-primary,
+.topbar-actions .btn-danger {
+  text-decoration: none;
+}
+
 .user-pill {
   border: 1px solid var(--line);
   border-radius: 999px;

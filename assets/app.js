@@ -683,6 +683,7 @@ function field(key, name, value = "", refs = {}) {
   if (name === "method" && key === "attendance") return select(name, value, [{ value: "QR", label: "QR" }, { value: "Manual", label: "Manual" }]);
   if (name === "day_name" && key === "schedules") return select(name, value, ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Ahad"]);
   if (name === "room" && key === "schedules") return select(name, value, ["Aula PPSA", "Masjid PPSA", "Kelas Tahfidz A", "Kelas Tahfidz B", "Kelas Madin Ula", "Kelas Madin Wustha", "Ruang Guru", "Perpustakaan", "Asrama Putra", "Asrama Putri"]);
+  if (name === "condition_status" && key === "inventory") return select(name, value, [{ value: "baik", label: "Baik" }, { value: "cukup", label: "Cukup" }, { value: "rusak", label: "Rusak" }]);
   if (name === "donor_type" && key === "donors") return select(name, value, ["Tetap", "Insidental", "Infaq", "Donatur", "Wakaf", "Alumni", "Wali Santri", "Lembaga", "Komunitas", "Lainnya"]);
   if (name === "type" && key === "contents") return select(name, value, ["article", "announcement"]);
   if (name === "content_type" && key === "activities") return select(name, value, ["activity", "article", "announcement"]);
