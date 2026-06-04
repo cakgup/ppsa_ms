@@ -13,8 +13,17 @@ const fallback = {
     hero_primary_href: "#pendaftaran",
     hero_secondary_label: "Lihat Program",
     hero_secondary_href: "#program",
+    summary_logo_url: "https://raw.githubusercontent.com/cakgup/ppsa/main/assets/logo.png",
     summary_title: "Ringkasan PSB 2026",
     summary_lead: "Pondok pesantren berbasis madrasah diniyah, pembentukan karakter, pengajian, dan program tahfidz terintegrasi.",
+    summary_stat_1_value: "1985",
+    summary_stat_1_label: "Berdiri",
+    summary_stat_2_value: "2",
+    summary_stat_2_label: "Program Utama",
+    summary_stat_3_value: "430K",
+    summary_stat_3_label: "SPP Bulanan",
+    summary_stat_4_value: "30 Juz",
+    summary_stat_4_label: "Target Tahfidz",
     profile_title: "Pondok Pesantren Sunan Ampel",
     profile_body_1: "Pondok Pesantren Sunan Ampel adalah pondok pesantren yang berada di jantung kota Jombang dan telah berdiri sejak tahun 1985 oleh KH. Mahfudz Anwar.",
     profile_body_2: "Saat ini Pondok Pesantren Sunan Ampel berada di bawah naungan pengasuh KH. Taufiqurrahman Muchit, dengan fokus pembentukan karakter melalui shalat berjamaah, pengajian, dan madrasah diniyah.",
@@ -203,6 +212,16 @@ function applyPortalSettings(settings) {
   if (heroSecondary && settings.hero_secondary_href) heroSecondary.href = settings.hero_secondary_href;
   setText("summaryTitle", settings.summary_title);
   setText("summaryLead", settings.summary_lead);
+  setText("summaryStat1Value", settings.summary_stat_1_value);
+  setText("summaryStat1Label", settings.summary_stat_1_label);
+  setText("summaryStat2Value", settings.summary_stat_2_value);
+  setText("summaryStat2Label", settings.summary_stat_2_label);
+  setText("summaryStat3Value", settings.summary_stat_3_value);
+  setText("summaryStat3Label", settings.summary_stat_3_label);
+  setText("summaryStat4Value", settings.summary_stat_4_value);
+  setText("summaryStat4Label", settings.summary_stat_4_label);
+  const summaryLogo = document.getElementById("summaryLogo");
+  if (summaryLogo && settings.summary_logo_url) summaryLogo.src = settings.summary_logo_url;
   setText("profileTitle", settings.profile_title);
   setText("profileBody1", settings.profile_body_1);
   setText("profileBody2", settings.profile_body_2);
