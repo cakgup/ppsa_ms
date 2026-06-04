@@ -20,7 +20,7 @@ const groups = [
   ["Media & Dakwah", [["contents", "Pengumuman/Artikel", "Ready"], ["gallery", "Galeri", "Demo"]]],
   ["Portal Publik", [["portal_settings", "Pengaturan Portal", "Ready"], ["programs", "Program Portal", "Ready"], ["portal_schedule", "Jadwal Portal", "Ready"], ["donation_programs", "Program Donasi", "Ready"]]],
   ["Inbox Publik", [["admissions", "Leads Pendaftaran", "Ready"], ["contact_messages", "Pesan Masuk", "Ready"], ["donation_confirmations", "Konfirmasi Donasi", "Ready"]]],
-  ["Pengembangan V4", [["lms", "LMS Pembelajaran", "Soon"], ["whatsapp", "WhatsApp Gateway", "Soon"], ["ai", "AI Chatbot", "Soon"], ["mobile", "Mobile App", "Soon"]]],
+  ["Pengembangan V4", [["lms", "LMS Pembelajaran", "Soon"]]],
   ["Sistem", [["users", "User & Role", "Ready"], ["audit", "Audit Log", "Ready"], ["settings", "Pengaturan", "Demo"], ["backup", "Backup", "Soon"]]]
 ];
 
