@@ -644,6 +644,7 @@ function field(key, name, value = "") {
   if (name === "role") return select(name, value || "operator", ["admin", "operator", "akademik", "keuangan", "pengasuh", "portal_admin"]);
   if (name === "type" && key === "cash") return select(name, value, ["masuk", "keluar", "Masuk", "Keluar"]);
   if (name === "category" && key === "cash") return select(name, value, ["SPP", "Infaq", "Donasi", "Wakaf", "Operasional", "Konsumsi", "Listrik", "Air", "Perawatan", "Kegiatan", "ATK", "Transportasi", "Lainnya"]);
+  if (name === "donor_type" && key === "donors") return select(name, value, ["Tetap", "Insidental", "Infaq", "Donatur", "Wakaf", "Alumni", "Wali Santri", "Lembaga", "Komunitas", "Lainnya"]);
   if (name === "type" && key === "contents") return select(name, value, ["article", "announcement"]);
   if (name === "content_type" && key === "activities") return select(name, value, ["activity", "article", "announcement"]);
   if (name === "semester") return select(name, value, ["Ganjil", "Genap"]);
