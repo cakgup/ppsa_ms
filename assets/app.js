@@ -8,7 +8,8 @@ const state = {
   token: localStorage.getItem("ppsa_ms_token"),
   user: JSON.parse(localStorage.getItem("ppsa_ms_user") || "null"),
   page: "dashboard",
-  filters: {}
+  filters: {},
+  sorts: {}
 };
 
 const groups = [
@@ -429,7 +430,7 @@ async function renderCrud(key) {
   setTitle(module.title, module.subtitle);
   const response = await callApi(`/api/${key}`);
   const query = state.filters[key] || "";
-  const rows = filterRows(response.data, query);
+  const rows = sortRows(filterRows(response.data, query), key, module.cols);
   const canCreate = module.allowCreate !== false;
 
   document.getElementById("content").innerHTML = `
@@ -453,6 +454,15 @@ async function renderCrud(key) {
     state.filters[key] = event.target.value.trim();
     renderCrud(key);
   }, 220);
+  document.querySelectorAll("[data-sort]").forEach((button) => {
+    button.onclick = () => {
+      const col = button.dataset.sort;
+      const current = state.sorts[key] || {};
+      const direction = current.col === col && current.direction === "asc" ? "desc" : "asc";
+      state.sorts[key] = { col, direction };
+      renderCrud(key);
+    };
+  });
 
   document.querySelectorAll("[data-edit]").forEach((button) => {
     button.onclick = () => openForm(key, JSON.parse(decodeURIComponent(button.dataset.edit)));
@@ -465,11 +475,18 @@ async function renderCrud(key) {
 function table(cols, rows, key) {
   const module = key ? meta[key] : null;
   const emptyColspan = cols.length + (key ? 1 : 0);
+  const currentSort = state.sorts[key] || {};
   return `
     <div class="table-wrap">
       <table>
         <thead>
-          <tr>${cols.map((col) => `<th>${labels[col] || col}</th>`).join("")}${key ? "<th>Aksi</th>" : ""}</tr>
+          <tr>${cols.map((col) => `
+            <th>
+              <button type="button" class="sort-head" data-sort="${col}">
+                <span>${labels[col] || col}</span>
+                <span class="sort-mark">${currentSort.col === col ? (currentSort.direction === "asc" ? "↑" : "↓") : (col === "id" ? "↕" : "")}</span>
+              </button>
+            </th>`).join("")}${key ? "<th>Aksi</th>" : ""}</tr>
         </thead>
         <tbody>
           ${rows.length ? rows.map((row) => `
@@ -613,6 +630,26 @@ function filterRows(rows, query) {
   if (!query) return rows;
   const needle = query.toLowerCase();
   return rows.filter((row) => Object.values(row).some((value) => String(value ?? "").toLowerCase().includes(needle)));
+}
+
+function sortRows(rows, key, cols = []) {
+  const explicit = state.sorts[key];
+  const fallbackCol = cols.includes("id") ? "id" : cols[0];
+  const sort = explicit || (fallbackCol ? { col: fallbackCol, direction: "asc" } : null);
+  if (!sort?.col) return rows;
+  return [...rows].sort((left, right) => compareValues(left?.[sort.col], right?.[sort.col], sort.direction));
+}
+
+function compareValues(left, right, direction = "asc") {
+  const a = left ?? "";
+  const b = right ?? "";
+  const numericA = Number(a);
+  const numericB = Number(b);
+  const bothNumeric = a !== "" && b !== "" && Number.isFinite(numericA) && Number.isFinite(numericB);
+  const result = bothNumeric
+    ? numericA - numericB
+    : String(a).localeCompare(String(b), "id", { numeric: true, sensitivity: "base" });
+  return direction === "desc" ? result * -1 : result;
 }
 
 function exportCsv(key, cols, rows) {
