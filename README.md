@@ -14,7 +14,7 @@
   <img src="https://img.shields.io/badge/Cloudflare-Workers-orange" alt="Cloudflare Workers">
   <img src="https://img.shields.io/badge/Cloudflare-D1-orange" alt="Cloudflare D1">
   <img src="https://img.shields.io/badge/PWA-Ready-2E7D32" alt="PWA Ready">
-  <img src="https://img.shields.io/badge/Demo-Fallback-blue" alt="Demo Fallback">
+  <img src="https://img.shields.io/badge/Mode-Production-166534" alt="Production Mode">
 </p>
 
 ---
@@ -29,17 +29,20 @@ Repository ini merupakan ikhtiar digital untuk membantu pengelolaan pesantren ya
 
 ## Tentang Aplikasi
 
-**PPSA Management System** adalah prototype aplikasi manajemen pesantren berbasis web statis. Frontend dapat berjalan di GitHub Pages, sementara backend produksi dapat diarahkan ke Cloudflare Workers dan Cloudflare D1.
+**PPSA Management System** adalah aplikasi manajemen pesantren berbasis web yang terdiri dari portal publik dan dashboard internal. Frontend dapat berjalan pada hosting statis, sementara backend produksi berjalan melalui Cloudflare Workers dan Cloudflare D1.
 
 Aplikasi ini sudah mendukung:
 
-- login demo;
+- login dashboard internal;
+- portal publik PPSA;
 - dashboard eksekutif;
 - modul CRUD untuk data utama pesantren;
+- form publik untuk pendaftaran, pesan, dan konfirmasi donasi;
 - pencarian data per modul;
+- sorting kolom tabel;
 - export data ke CSV;
-- penyimpanan data demo di `localStorage`;
-- fallback otomatis ke data demo jika API belum tersedia;
+- referensi dinamis dari data induk santri, pengajar, kelas, dan mata pelajaran;
+- grafik eksekutif berbasis data database;
 - PWA cache dasar melalui service worker.
 
 ---
@@ -51,13 +54,13 @@ Aplikasi ini sudah mendukung:
 | Dashboard | Ringkasan santri, pengajar, kelas, saldo kas, kehadiran, dan pembayaran |
 | Manajemen Santri | Biodata santri, wali, kelas, kontak, status, dan catatan |
 | Pengajar | Data ustadz/pengajar, spesialisasi, dan status aktif |
-| Akademik | Kelas, mata pelajaran, jadwal, dan roadmap nilai/rapor |
+| Akademik | Kelas, mata pelajaran, jadwal, nilai/rapor, dan absensi |
 | Tahfidz | Monitoring hafalan, murajaah, skor, dan catatan pengajar |
-| Absensi | Data kehadiran kegiatan atau pembelajaran berbasis QR/manual |
+| Absensi | Data kehadiran kegiatan atau pembelajaran dengan metode QR/manual |
 | Keuangan | Buku kas, SPP/iuran, donatur, infaq, dan histori pembayaran |
 | Administrasi | Surat menyurat, arsip, inventaris, asrama, dan perpustakaan |
-| Media Dakwah | Pengumuman, artikel, galeri, dan dokumentasi kegiatan |
-| Sistem | User role, audit log, pengaturan, dan roadmap backup |
+| Portal Publik | Pengaturan portal, program, jadwal santri, donasi, dan konten publikasi |
+| Sistem | User role dan pengelolaan akses dashboard |
 
 ---
 
@@ -65,25 +68,31 @@ Aplikasi ini sudah mendukung:
 
 ```text
 ppsa_ms/
-├── index.html
-├── assets/
-│   ├── app.js
-│   ├── config.js
-│   └── styles.css
-├── manifest.webmanifest
-├── sw.js
-├── LICENSE
-└── README.md
+|-- index.html
+|-- dashboard.html
+|-- assets/
+|   |-- app.js
+|   |-- config.js
+|   |-- portal.js
+|   |-- portal.css
+|   `-- styles.css
+|-- manifest.webmanifest
+|-- sw.js
+|-- LICENSE
+`-- README.md
 ```
 
 Keterangan singkat:
 
 | File | Fungsi |
 |---|---|
-| `index.html` | Struktur halaman login dan dashboard |
-| `assets/app.js` | Logika aplikasi, data demo, routing menu, CRUD, pencarian, dan export CSV |
-| `assets/config.js` | Konfigurasi API, mode demo, dan fallback |
-| `assets/styles.css` | Tampilan aplikasi dan responsive layout |
+| `index.html` | Halaman portal publik PPSA |
+| `dashboard.html` | Halaman dashboard internal/admin |
+| `assets/app.js` | Logika dashboard admin, CRUD, referensi dinamis, analitik, pencarian, sorting, dan export CSV |
+| `assets/config.js` | Konfigurasi API dan URL aplikasi terkait |
+| `assets/portal.js` | Logika portal publik, form publik, dan sinkronisasi konten dari API |
+| `assets/portal.css` | Tampilan portal publik |
+| `assets/styles.css` | Tampilan dashboard admin dan responsive layout |
 | `manifest.webmanifest` | Konfigurasi PWA |
 | `sw.js` | Service worker untuk cache asset statis |
 
@@ -119,18 +128,18 @@ http://localhost:3000
 
 ---
 
-## Akun Demo
+## Akun Admin
 
 ```text
-Email    : admin@ppsa.local
-Password : Admin12345!
+Email    : ********
+Password : ********
 ```
 
 Catatan:
 
-- Jika `DEMO_MODE` bernilai `true`, semua request memakai data demo.
-- Jika `DEMO_MODE` bernilai `false` tetapi API belum tersedia, aplikasi akan fallback ke data demo selama `FALLBACK_TO_DEMO` bernilai `true`.
-- Data demo yang ditambah/edit/hapus disimpan sementara di browser melalui `localStorage`.
+- Kredensial admin disimpan terpisah dari repository dan tidak dituliskan terbuka di README.
+- Untuk lingkungan produksi, `DEMO_MODE` bernilai `false`.
+- Untuk lingkungan produksi, `FALLBACK_TO_DEMO` bernilai `false`.
 
 ---
 
@@ -148,8 +157,9 @@ Contoh:
 window.PPSA_CONFIG = {
   API_BASE_URL: "https://example.workers.dev",
   APP_NAME: "PPSA Management System",
+  DOA_APP_URL: "https://example-doa.app",
   DEMO_MODE: false,
-  FALLBACK_TO_DEMO: true
+  FALLBACK_TO_DEMO: false
 };
 ```
 
@@ -157,7 +167,8 @@ Untuk produksi:
 
 - arahkan `API_BASE_URL` ke Cloudflare Worker aktif;
 - set `DEMO_MODE` ke `false`;
-- matikan `FALLBACK_TO_DEMO` jika ingin error API terlihat tegas.
+- set `FALLBACK_TO_DEMO` ke `false`;
+- simpan kredensial dan secret backend di luar repository.
 
 ---
 
@@ -165,16 +176,17 @@ Untuk produksi:
 
 ### Versi 1
 
-- Dashboard eksekutif
-- CRUD data santri, guru, kelas, dan kegiatan
-- Buku kas dan SPP/iuran
-- Export CSV
+- Portal publik dan dashboard internal
+- CRUD data santri, guru, kelas, kegiatan, keuangan, dan administrasi
+- Buku kas, SPP/iuran, dan donatur/infaq
+- Export CSV dan sorting tabel
+- Grafik eksekutif berbasis data database
 
 ### Versi 2
 
 - Tahfidz lebih detail per juz/surah
-- Absensi QR sungguhan
-- Multi cabang/unit
+- Absensi QR sungguhan berbasis scanner
+- Role permission granular
 - Surat menyurat dengan template cetak
 
 ### Versi 3
@@ -182,7 +194,7 @@ Untuk produksi:
 - Perpustakaan dan asrama lebih lengkap
 - WhatsApp Gateway
 - Backup terjadwal
-- Role permission granular
+- Dashboard lintas cabang/unit
 
 ### Versi 4
 
@@ -195,11 +207,13 @@ Untuk produksi:
 
 ## Checklist Sebelum Publish
 
-- [ ] Login demo berjalan normal
+- [ ] Login dashboard berjalan normal
 - [ ] Dashboard tampil setelah login
-- [ ] Tambah, edit, hapus data berjalan di mode demo
+- [ ] Tambah, edit, hapus data berjalan melalui API produksi
 - [ ] Pencarian tabel berjalan di beberapa modul
+- [ ] Sorting tabel berjalan di beberapa modul
 - [ ] Export CSV menghasilkan file
+- [ ] Form publik portal masuk ke database
 - [ ] Tampilan mobile tidak memotong menu dan tabel
 - [ ] `assets/config.js` sudah sesuai target deploy
 - [ ] Service worker tidak menahan cache lama
@@ -211,10 +225,10 @@ Untuk produksi:
 
 | Teknologi | Fungsi |
 |---|---|
-| HTML | Struktur aplikasi |
-| CSS | Layout dashboard dan tampilan responsive |
-| JavaScript | Logika aplikasi, CRUD, demo API, dan export CSV |
-| localStorage | Penyimpanan session dan data demo |
+| HTML | Struktur portal publik dan dashboard admin |
+| CSS | Layout dashboard, portal, dan tampilan responsive |
+| JavaScript | Logika aplikasi, CRUD, analitik, referensi dinamis, dan export CSV |
+| localStorage | Penyimpanan session dashboard |
 | Service Worker | Cache asset statis |
 | Cloudflare Workers | Target backend API produksi |
 | Cloudflare D1 | Target database produksi |
