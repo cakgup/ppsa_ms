@@ -185,6 +185,14 @@ textarea { min-height: 105px; resize: vertical; }
 .form-status { margin: 0; color: var(--green); font-weight: 800; }
 .two-columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
 .stack-list { display: grid; gap: 12px; }
+.stack-rule {
+  display: block;
+  width: 64px;
+  height: 3px;
+  border-radius: 999px;
+  margin: 2px 0 12px;
+  background: linear-gradient(90deg, var(--green), rgba(22, 101, 52, 0.16));
+}
 .stack-item time, .stack-item small { color: var(--muted); font-weight: 700; }
 .schedule-grid .stack-item {
   padding: 14px 16px 12px;

@@ -158,7 +158,7 @@ function renderStack(targetId, rows) {
   target.innerHTML = rows.map((item) => `
     <article class="stack-item">
       <h3>${escapeHtml(item.title || item.name)}</h3>
-      ${item.date || item.created_at ? `<time>${escapeHtml(item.date || item.created_at)}</time>` : ""}
+      <span class="stack-rule" aria-hidden="true"></span>
       <p>${escapeHtml(item.summary || item.description || item.body || "")}</p>
     </article>
   `).join("");
