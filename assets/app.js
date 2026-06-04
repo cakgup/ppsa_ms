@@ -599,9 +599,11 @@ async function openForm(key, row = {}) {
 }
 
 async function loadFormRefs() {
-  const [teachersResponse, studentsResponse] = await Promise.all([
+  const [teachersResponse, studentsResponse, classesResponse, subjectsResponse] = await Promise.all([
     callApi("/api/teachers").catch(() => ({ data: [] })),
-    callApi("/api/students").catch(() => ({ data: [] }))
+    callApi("/api/students").catch(() => ({ data: [] })),
+    callApi("/api/classes").catch(() => ({ data: [] })),
+    callApi("/api/subjects").catch(() => ({ data: [] }))
   ]);
   return {
     teachers: (teachersResponse.data || [])
@@ -610,6 +612,16 @@ async function loadFormRefs() {
       .filter(Boolean)
       .sort((left, right) => String(left).localeCompare(String(right), "id")),
     students: (studentsResponse.data || [])
+      .filter((item) => String(item.status || "").toLowerCase() !== "nonaktif")
+      .map((item) => item.name)
+      .filter(Boolean)
+      .sort((left, right) => String(left).localeCompare(String(right), "id")),
+    classes: (classesResponse.data || [])
+      .filter((item) => String(item.status || "").toLowerCase() !== "nonaktif")
+      .map((item) => item.name)
+      .filter(Boolean)
+      .sort((left, right) => String(left).localeCompare(String(right), "id")),
+    subjects: (subjectsResponse.data || [])
       .filter((item) => String(item.status || "").toLowerCase() !== "nonaktif")
       .map((item) => item.name)
       .filter(Boolean)
@@ -662,11 +674,15 @@ function field(key, name, value = "", refs = {}) {
   }
   if (name === "gender") return select(name, value, ["L", "P", "-"]);
   if (name === "student_name") return datalistField(name, value, buildDynamicOptions(refs.students || [], value), "Ketik atau pilih santri");
+  if (name === "class_name") return datalistField(name, value, buildDynamicOptions(refs.classes || [], value), "Ketik atau pilih kelas");
+  if (name === "subject_name") return datalistField(name, value, buildDynamicOptions(refs.subjects || [], value), "Ketik atau pilih mata pelajaran");
   if (["teacher_name", "homeroom_teacher"].includes(name)) return datalistField(name, value, buildDynamicOptions(refs.teachers || [], value), "Ketik atau pilih pengajar");
   if (name === "role") return select(name, value || "operator", ["admin", "operator", "akademik", "keuangan", "pengasuh", "portal_admin"]);
   if (name === "type" && key === "cash") return select(name, value, [{ value: "masuk", label: "Masuk" }, { value: "keluar", label: "Keluar" }]);
   if (name === "category" && key === "cash") return select(name, value, ["SPP", "Infaq", "Donasi", "Wakaf", "Operasional", "Konsumsi", "Listrik", "Air", "Perawatan", "Kegiatan", "ATK", "Transportasi", "Lainnya"]);
   if (name === "method" && key === "attendance") return select(name, value, [{ value: "QR", label: "QR" }, { value: "Manual", label: "Manual" }]);
+  if (name === "day_name" && key === "schedules") return select(name, value, ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Ahad"]);
+  if (name === "room" && key === "schedules") return select(name, value, ["Aula PPSA", "Masjid PPSA", "Kelas Tahfidz A", "Kelas Tahfidz B", "Kelas Madin Ula", "Kelas Madin Wustha", "Ruang Guru", "Perpustakaan", "Asrama Putra", "Asrama Putri"]);
   if (name === "donor_type" && key === "donors") return select(name, value, ["Tetap", "Insidental", "Infaq", "Donatur", "Wakaf", "Alumni", "Wali Santri", "Lembaga", "Komunitas", "Lainnya"]);
   if (name === "type" && key === "contents") return select(name, value, ["article", "announcement"]);
   if (name === "content_type" && key === "activities") return select(name, value, ["activity", "article", "announcement"]);
