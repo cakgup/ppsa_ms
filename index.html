@@ -150,11 +150,11 @@
       </div>
       <form class="public-form" data-api-form="/public/admissions">
         <h3>Formulir Minat PSB</h3>
-        <label>Nama Calon Santri<input name="student_name" required /></label>
+        <label>Nama Calon Santri<input name="student_name" placeholder="Tuliskan nama lengkap calon santri" required /></label>
         <label>Jenis Kelamin<select name="gender" required><option value="">Pilih</option><option>Laki-laki</option><option>Perempuan</option></select></label>
         <label>Tanggal Lahir<input type="date" name="birth_date" /></label>
-        <label>Nama Wali<input name="guardian_name" required /></label>
-        <label>No. WhatsApp<input name="phone" required /></label>
+        <label>Nama Wali<input name="guardian_name" placeholder="Tuliskan nama lengkap orang tua atau wali" required /></label>
+        <label>No. WhatsApp<input name="phone" placeholder="Contoh: 08xxxxxxxxxx" required /></label>
         <label>
           Pilihan Program
           <select name="program" required>
@@ -164,7 +164,7 @@
             <option value="Madrasah Diniyah + Tahfidz Al-Qur'an">Madrasah Diniyah + Tahfidz Al-Qur'an</option>
           </select>
         </label>
-        <label class="full">Alamat<textarea name="address"></textarea></label>
+        <label class="full">Alamat<textarea name="address" placeholder="Tuliskan alamat domisili lengkap"></textarea></label>
         <label class="full">Catatan<textarea name="notes" placeholder="Contoh: asal sekolah, minat tahfidz, atau pertanyaan untuk panitia"></textarea></label>
         <button class="btn-primary" type="submit">Kirim Data Pendaftaran</button>
         <p class="form-status" role="status"></p>
@@ -240,11 +240,11 @@
       </div>
       <form class="public-form" data-api-form="/public/donation-confirmation">
         <h3>Konfirmasi Donasi</h3>
-        <label>Nama Donatur<input name="donor_name" required /></label>
-        <label>No. WhatsApp<input name="phone" /></label>
-        <label>Nominal<input type="number" name="amount" required /></label>
+        <label>Nama Donatur<input name="donor_name" placeholder="Tuliskan nama lengkap donatur" required /></label>
+        <label>No. WhatsApp<input name="phone" placeholder="Contoh: 08xxxxxxxxxx" /></label>
+        <label>Nominal<input type="number" name="amount" placeholder="Contoh: 500000" required /></label>
         <label>Metode Transfer<input name="method" placeholder="Transfer bank / QRIS" /></label>
-        <label class="full">Catatan<textarea name="notes"></textarea></label>
+        <label class="full">Catatan<textarea name="notes" placeholder="Donasi, infaq, dan wakaf dikhususkan untuk (sebutkan nama almarhum/almarhumah bila ada)"></textarea></label>
         <button class="btn-primary" type="submit">Kirim Konfirmasi</button>
         <p class="form-status" role="status"></p>
       </form>
@@ -290,10 +290,10 @@
         </div>
         <form class="public-form" data-api-form="/public/contact">
           <h3>Kirim Pesan</h3>
-          <label>Nama<input name="name" required /></label>
-          <label>Kontak<input name="contact" required /></label>
-          <label class="full">Subjek<input name="subject" /></label>
-          <label class="full">Pesan<textarea name="message" required></textarea></label>
+          <label>Nama<input name="name" placeholder="Tuliskan nama lengkap Anda" required /></label>
+          <label>Kontak<input name="contact" placeholder="Nomor WhatsApp atau email aktif" required /></label>
+          <label class="full">Subjek<input name="subject" placeholder="Contoh: Pertanyaan pendaftaran santri baru" /></label>
+          <label class="full">Pesan<textarea name="message" placeholder="Tuliskan pesan, pertanyaan, atau informasi yang ingin disampaikan" required></textarea></label>
           <button class="btn-primary" type="submit">Kirim Pesan</button>
           <p class="form-status" role="status"></p>
         </form>
