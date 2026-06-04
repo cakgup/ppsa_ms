@@ -599,11 +599,17 @@ async function openForm(key, row = {}) {
 }
 
 async function loadFormRefs() {
-  const [teachersResponse] = await Promise.all([
-    callApi("/api/teachers").catch(() => ({ data: [] }))
+  const [teachersResponse, studentsResponse] = await Promise.all([
+    callApi("/api/teachers").catch(() => ({ data: [] })),
+    callApi("/api/students").catch(() => ({ data: [] }))
   ]);
   return {
     teachers: (teachersResponse.data || [])
+      .filter((item) => String(item.status || "").toLowerCase() !== "nonaktif")
+      .map((item) => item.name)
+      .filter(Boolean)
+      .sort((left, right) => String(left).localeCompare(String(right), "id")),
+    students: (studentsResponse.data || [])
       .filter((item) => String(item.status || "").toLowerCase() !== "nonaktif")
       .map((item) => item.name)
       .filter(Boolean)
@@ -655,6 +661,7 @@ function field(key, name, value = "", refs = {}) {
     return `<div class="full"><label>${labels[name] || name}</label><textarea name="${name}">${esc(value)}</textarea></div>`;
   }
   if (name === "gender") return select(name, value, ["L", "P", "-"]);
+  if (name === "student_name") return select(name, value, buildDynamicOptions(refs.students || [], value, "Pilih santri"));
   if (["teacher_name", "homeroom_teacher"].includes(name)) return select(name, value, buildDynamicOptions(refs.teachers || [], value, "Pilih pengajar"));
   if (name === "role") return select(name, value || "operator", ["admin", "operator", "akademik", "keuangan", "pengasuh", "portal_admin"]);
   if (name === "type" && key === "cash") return select(name, value, [{ value: "masuk", label: "Masuk" }, { value: "keluar", label: "Keluar" }]);
