@@ -1,6 +1,6 @@
 const PORTAL_CONFIG = window.PPSA_CONFIG || {};
 const API_BASE = PORTAL_CONFIG.API_BASE_URL || "";
-const DOA_URL = PORTAL_CONFIG.DOA_APP_URL || "https://cakgup.github.io/ppsa/";
+const DOA_URL = PORTAL_CONFIG.DOA_APP_URL || "https://ppsajombang.vercel.app";
 
 const fallback = {
   programs: [
