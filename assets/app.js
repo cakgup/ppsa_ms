@@ -648,6 +648,7 @@ function field(key, name, value = "") {
   if (name === "type" && key === "contents") return select(name, value, ["article", "announcement"]);
   if (name === "content_type" && key === "activities") return select(name, value, ["activity", "article", "announcement"]);
   if (name === "semester") return select(name, value, ["Ganjil", "Genap"]);
+  if (name === "memorization_status" && key === "tahfidz") return select(name, value, ["lancar", "cukup", "mengulang"]);
   if (name === "status" && key === "payments") return select(name, value, [{ value: "lunas", label: "Lunas" }, { value: "cicil", label: "Cicil" }, { value: "belum_lunas", label: "Belum Lunas" }]);
   if (name === "status") return select(name, value, ["aktif", "nonaktif", "terjadwal", "selesai", "publikasi", "terbit", "hadir", "izin", "sakit", "alpa", "lunas", "belum_lunas", "terkirim", "draft", "baik", "rusak"]);
   if (name === "follow_up_status") return select(name, value, ["baru", "diproses", "selesai", "ditutup"]);
