@@ -3,5 +3,5 @@ window.PPSA_CONFIG = {
   APP_NAME: "PPSA Management System",
   DOA_APP_URL: "https://ppsajombang.vercel.app",
   DEMO_MODE: false,
-  FALLBACK_TO_DEMO: true
+  FALLBACK_TO_DEMO: false
 };

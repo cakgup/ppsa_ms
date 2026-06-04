@@ -240,6 +240,11 @@ function resetDemo() {
   renderPage(state.page);
 }
 
+function refreshDashboard() {
+  showNotice("Data dashboard dimuat ulang dari database.");
+  renderPage("dashboard");
+}
+
 async function callApi(path, opt = {}) {
   if (DEMO_MODE || !API) return demoApi(path, opt);
 
@@ -394,7 +399,7 @@ async function renderDashboard() {
         <div class="card-head">
           <div>
             <h3>Tren Kehadiran 6 Pekan</h3>
-            <p class="muted">Simulasi ringkasan absensi kegiatan dan kelas.</p>
+            <p class="muted">Ringkasan kehadiran berdasarkan data absensi yang tercatat.</p>
           </div>
         </div>
         <div class="chart">${data.chart.map((value, index) => `<div class="bar" style="height:${value}%"><b>${value}%</b><span>P${index + 1}</span></div>`).join("")}</div>
@@ -407,7 +412,7 @@ async function renderDashboard() {
           <div><span>Rasio pembayaran</span><b>${totals.payment_ratio ?? 0}%</b></div>
           <div><span>Tagihan belum lunas</span><b>${totals.unpaid ?? 0}</b></div>
         </div>
-        <button class="btn-secondary wide" id="resetDemoBtn">Reset Data Demo</button>
+        <button class="btn-secondary wide" id="refreshDashboardBtn">${DEMO_MODE ? "Reset Data Lokal" : "Muat Ulang Data"}</button>
       </div>
     </section>
     <section class="card spaced">
@@ -421,7 +426,7 @@ async function renderDashboard() {
       ${table(["activity_date", "title", "location", "status"], data.latestActivities)}
     </section>`;
 
-  document.getElementById("resetDemoBtn").onclick = resetDemo;
+  document.getElementById("refreshDashboardBtn").onclick = DEMO_MODE ? resetDemo : refreshDashboard;
   document.querySelector("[data-jump='activities']").onclick = () => renderPage("activities");
 }
 
