@@ -68,6 +68,12 @@ button {
   font-weight: 900;
 }
 
+.brand-logo {
+  object-fit: contain;
+  background: #fff;
+  padding: 4px;
+}
+
 .brand-mark {
   width: 76px;
   height: 76px;
@@ -186,8 +192,7 @@ textarea {
   width: 48px;
   height: 48px;
   border-radius: 14px;
-  background: var(--gold);
-  color: #18230f;
+  background: #fff;
 }
 
 .sidebar-brand span {
