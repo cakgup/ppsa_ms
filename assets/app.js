@@ -18,6 +18,7 @@ const groups = [
   ["Keuangan", [["cash", "Buku Kas", "Ready"], ["payments", "SPP/Iuran", "Ready"], ["donors", "Donatur/Infaq", "Ready"]]],
   ["Operasional", [["activities", "Kegiatan", "Ready"], ["letters", "Surat Menyurat", "Ready"], ["library", "Perpustakaan", "Ready"], ["dormitories", "Asrama/Kamar", "Ready"], ["inventory", "Inventaris", "Ready"]]],
   ["Media & Dakwah", [["contents", "Pengumuman/Artikel", "Ready"], ["gallery", "Galeri", "Demo"]]],
+  ["Portal Publik", [["portal_settings", "Pengaturan Portal", "Ready"], ["programs", "Program Portal", "Ready"], ["portal_schedule", "Jadwal Portal", "Ready"], ["donation_programs", "Program Donasi", "Ready"]]],
   ["Inbox Publik", [["admissions", "Leads Pendaftaran", "Ready"], ["contact_messages", "Pesan Masuk", "Ready"], ["donation_confirmations", "Konfirmasi Donasi", "Ready"]]],
   ["Pengembangan V4", [["lms", "LMS Pembelajaran", "Soon"], ["whatsapp", "WhatsApp Gateway", "Soon"], ["ai", "AI Chatbot", "Soon"], ["mobile", "Mobile App", "Soon"]]],
   ["Sistem", [["users", "User & Role", "Ready"], ["audit", "Audit Log", "Ready"], ["settings", "Pengaturan", "Demo"], ["backup", "Backup", "Soon"]]]
@@ -37,7 +38,11 @@ const meta = {
   payments: { title: "SPP/Iuran", subtitle: "Tagihan, pembayaran, dan status iuran santri", cols: ["id", "student_name", "period", "amount", "paid_amount", "status"], fields: ["student_name", "period", "amount", "paid_amount", "due_date", "status", "notes"] },
   donors: { title: "Donatur/Infaq", subtitle: "Data donatur dan histori kontribusi", cols: ["id", "name", "donor_type", "phone", "last_donation", "total_donation"], fields: ["name", "donor_type", "phone", "address", "last_donation", "total_donation", "notes"] },
   activities: { title: "Kegiatan", subtitle: "Kajian, rapat, event santri, dan dakwah", cols: ["id", "title", "activity_date", "location", "status"], fields: ["title", "activity_date", "location", "description", "status"] },
-  contents: { title: "Pengumuman/Artikel", subtitle: "Konten publik, pengumuman, dan materi dakwah", cols: ["id", "title", "category", "is_published"], fields: ["title", "category", "body", "is_published"] },
+  contents: { title: "Pengumuman/Artikel", subtitle: "Konten publik, pengumuman, dan materi dakwah", cols: ["id", "title", "type", "summary", "is_published"], fields: ["title", "type", "summary", "body", "is_published"] },
+  programs: { title: "Program Portal", subtitle: "Program unggulan yang tampil di portal publik", cols: ["id", "title", "sort_order", "is_published"], fields: ["title", "description", "sort_order", "is_published"] },
+  donation_programs: { title: "Program Donasi", subtitle: "Daftar program donasi, infaq, dan wakaf di portal", cols: ["id", "title", "target_amount", "is_active"], fields: ["title", "summary", "target_amount", "is_active"] },
+  portal_schedule: { title: "Jadwal Portal", subtitle: "Ritme harian santri yang tampil di portal publik", cols: ["id", "sort_order", "time_slot", "activity"], fields: ["time_slot", "activity", "sort_order"] },
+  portal_settings: { title: "Pengaturan Portal", subtitle: "Konten utama portal publik PPSA", cols: ["id", "site_name", "hero_title", "registration_title", "contact_title"], fields: ["site_name", "site_tagline", "hero_eyebrow", "hero_title", "hero_lead", "hero_primary_label", "hero_primary_href", "hero_secondary_label", "hero_secondary_href", "summary_title", "summary_lead", "profile_title", "profile_body_1", "profile_body_2", "focus_title", "focus_points", "program_section_title", "program_section_lead", "required_title", "required_points", "extra_title", "extra_points", "registration_title", "registration_lead", "psb_card_title", "psb_registration_text", "psb_entry_text", "requirements_title", "requirements_points", "pricing_title", "pricing_putra", "pricing_putri", "pricing_spp", "pricing_note", "schedule_title", "schedule_lead", "donation_title", "donation_lead", "doa_title", "doa_lead", "doa_url", "contact_title", "contact_address", "instagram_label", "instagram_url", "youtube_label", "youtube_url", "whatsapp_1_label", "whatsapp_1_number", "whatsapp_2_label", "whatsapp_2_number"], singleton: true },
   letters: { title: "Surat Menyurat", subtitle: "Surat masuk, surat keluar, dan arsip digital", cols: ["id", "letter_no", "letter_date", "type", "subject", "status"], fields: ["letter_no", "letter_date", "type", "sender_receiver", "subject", "summary", "status"] },
   library: { title: "Perpustakaan", subtitle: "Buku, peminjaman, dan pengembalian", cols: ["id", "book_code", "title", "author", "stock", "available"], fields: ["book_code", "title", "author", "category", "stock", "available", "location"] },
   dormitories: { title: "Asrama/Kamar", subtitle: "Penempatan santri dan kapasitas kamar", cols: ["id", "room_name", "building", "capacity", "occupied", "supervisor"], fields: ["room_name", "building", "capacity", "occupied", "supervisor", "notes"] },
@@ -66,7 +71,20 @@ const labels = {
   purchase_year: "Tahun Beli", email: "Email", role: "Role", created_at: "Waktu", user_name: "User", action: "Aksi", module: "Modul",
   relation: "Relasi", occupation: "Pekerjaan", program: "Program", contact: "Kontak", message: "Pesan",
   donor_name: "Donatur", method: "Metode", follow_up_status: "Status Follow Up", follow_up_notes: "Catatan Follow Up",
-  handled_by: "Ditangani Oleh", handled_at: "Ditangani Pada"
+  handled_by: "Ditangani Oleh", handled_at: "Ditangani Pada", type: "Tipe", summary: "Ringkasan", sort_order: "Urutan", time_slot: "Jam",
+  target_amount: "Target", is_active: "Aktif", site_name: "Nama Situs", site_tagline: "Tagline Situs", hero_eyebrow: "Label Hero",
+  hero_title: "Judul Hero", hero_lead: "Deskripsi Hero", hero_primary_label: "Label Tombol Utama", hero_primary_href: "Link Tombol Utama",
+  hero_secondary_label: "Label Tombol Kedua", hero_secondary_href: "Link Tombol Kedua", summary_title: "Judul Ringkasan", summary_lead: "Deskripsi Ringkasan",
+  profile_title: "Judul Profil", profile_body_1: "Profil Paragraf 1", profile_body_2: "Profil Paragraf 2", focus_title: "Judul Fokus",
+  focus_points: "Poin Fokus", program_section_title: "Judul Program", program_section_lead: "Deskripsi Program", required_title: "Judul Kegiatan Wajib",
+  required_points: "Poin Kegiatan Wajib", extra_title: "Judul Kegiatan Tambahan", extra_points: "Poin Kegiatan Tambahan", registration_title: "Judul Pendaftaran",
+  registration_lead: "Deskripsi Pendaftaran", psb_card_title: "Judul Kartu Jadwal PSB", psb_registration_text: "Teks Pendaftaran", psb_entry_text: "Teks Masuk Pondok",
+  requirements_title: "Judul Persyaratan", requirements_points: "Poin Persyaratan", pricing_title: "Judul Pembiayaan", pricing_putra: "Biaya Putra",
+  pricing_putri: "Biaya Putri", pricing_spp: "SPP Bulanan", pricing_note: "Catatan Pembiayaan", schedule_title: "Judul Jadwal",
+  schedule_lead: "Deskripsi Jadwal", donation_title: "Judul Donasi", donation_lead: "Deskripsi Donasi", doa_title: "Judul Aplikasi Doa",
+  doa_lead: "Deskripsi Aplikasi Doa", doa_url: "URL Aplikasi Doa", contact_title: "Judul Kontak", contact_address: "Alamat Kontak",
+  instagram_label: "Label Instagram", instagram_url: "URL Instagram", youtube_label: "Label YouTube", youtube_url: "URL YouTube",
+  whatsapp_1_label: "Label WhatsApp 1", whatsapp_1_number: "Nomor WhatsApp 1", whatsapp_2_label: "Label WhatsApp 2", whatsapp_2_number: "Nomor WhatsApp 2"
 };
 
 const seedDemo = {
@@ -90,6 +108,77 @@ const seedDemo = {
   donors: [{ id: 1, name: "Hamba Allah", donor_type: "Tetap", phone: "-", last_donation: 1000000, total_donation: 12000000 }],
   activities: [{ id: 1, title: "Kajian Ahad Pagi", activity_date: "2026-06-07", location: "Aula PPSA", status: "terjadwal" }],
   contents: [{ id: 1, title: "Pengumuman Kajian Ahad", category: "Pengumuman", is_published: 1, body: "Kajian Ahad pagi dibuka untuk umum." }],
+  programs: [
+    { id: 1, title: "Madrasah Diniyah", description: "Pembelajaran dasar agama, kitab, pengajian, dan pembentukan karakter santri dalam ritme keseharian pondok.", sort_order: 1, is_published: 1 },
+    { id: 2, title: "Tahfidz Al-Qur'an Gratis", description: "Setoran Al-Qur'an, muroqobah 5 juz, imtihan syafawi, ujian juz, dan target hafalan 30 juz bersanad.", sort_order: 2, is_published: 1 },
+    { id: 3, title: "Sekolah Formal Terintegrasi", description: "Santri tetap mendapatkan ijazah sekolah formal dan syahadah tahfidz dalam pembinaan yang terhubung dengan MA Terpadu Sunan Ampel.", sort_order: 3, is_published: 1 }
+  ],
+  donation_programs: [
+    { id: 1, title: "Beasiswa Santri", summary: "Dukungan biaya pendidikan untuk santri yang membutuhkan.", target_amount: 0, is_active: 1 },
+    { id: 2, title: "Wakaf Al-Qur'an", summary: "Program pengadaan mushaf dan bahan belajar Al-Qur'an untuk santri.", target_amount: 0, is_active: 1 },
+    { id: 3, title: "Operasional Pondok", summary: "Dukungan kegiatan pendidikan, madrasah diniyah, dan layanan pondok.", target_amount: 0, is_active: 1 }
+  ],
+  portal_schedule: [
+    { id: 1, time_slot: "03.00 - 04.30", activity: "Shalat malam.", sort_order: 1 },
+    { id: 2, time_slot: "04.30 - 05.00", activity: "Shalat subuh berjama'ah.", sort_order: 2 },
+    { id: 3, time_slot: "05.00 - 06.00", activity: "Pengajian Al-Qur'an dan majelis shalawat pada Jumat pagi.", sort_order: 3 }
+  ],
+  portal_settings: [
+    {
+      id: 1,
+      site_name: "Pondok Pesantren Sunan Ampel",
+      site_tagline: "Jl. Jaksa Agung Suprapto No.14, Jombang, Jawa Timur",
+      hero_eyebrow: "PSB 2026 Resmi Dibuka",
+      hero_title: "Penerimaan santri baru Pondok Pesantren Sunan Ampel Jombang.",
+      hero_lead: "Pendaftaran dibuka mulai 1 Februari sampai 31 Juli 2026. Program unggulan meliputi Madrasah Diniyah dan Tahfidz Al-Qur'an gratis, dengan masuk pondok mulai Agustus 2026.",
+      hero_primary_label: "Daftar Santri Baru",
+      hero_primary_href: "#pendaftaran",
+      hero_secondary_label: "Lihat Program",
+      hero_secondary_href: "#program",
+      summary_title: "Ringkasan PSB 2026",
+      summary_lead: "Pondok pesantren berbasis madrasah diniyah, pembentukan karakter, pengajian, dan program tahfidz terintegrasi.",
+      profile_title: "Pondok Pesantren Sunan Ampel",
+      profile_body_1: "Pondok Pesantren Sunan Ampel adalah pondok pesantren yang berada di jantung kota Jombang dan telah berdiri sejak tahun 1985 oleh KH. Mahfudz Anwar.",
+      profile_body_2: "Saat ini Pondok Pesantren Sunan Ampel berada di bawah naungan pengasuh KH. Taufiqurrahman Muchit, dengan fokus pembentukan karakter melalui shalat berjamaah, pengajian, dan madrasah diniyah.",
+      focus_title: "Fokus Pendidikan",
+      focus_points: "Madrasah diniyah dan pengajian Al-Qur'an.|Hafalan Juz Amma dan tahfidz Al-Qur'an.|Shalat jama'ah, tahajud, dan majelis shalawat.|Pembinaan akhlak, disiplin, dan kemandirian santri.",
+      program_section_title: "Madrasah diniyah dan tahfidz gratis",
+      program_section_lead: "Program unggulan PPSA menekankan pendidikan diniyah, pembiasaan ibadah, dan jalur tahfidz yang terintegrasi dengan sekolah formal.",
+      required_title: "Kegiatan Wajib",
+      required_points: "Madrasah diniyah.|Hafalan Juz Amma.|Shalat tahajud dan shalat jama'ah.|Pengajian Al-Qur'an dan kitab kuning.|Majelis shalawat.",
+      extra_title: "Kegiatan Tambahan",
+      extra_points: "Tahfidz Al-Qur'an.|Pelatihan baca Qur'an metode Yanbu'a.|Pelatihan bilal dan imam shalat.|Khitobah.|Mengurus jenazah.",
+      registration_title: "Pendaftaran dibuka sampai 31 Juli 2026",
+      registration_lead: "Calon wali santri dapat mengisi formulir pendaftaran awal untuk memulai proses PSB. Panitia akan meninjau data yang masuk dan menghubungi wali santri untuk tahapan berikutnya.",
+      psb_card_title: "Jadwal PSB",
+      psb_registration_text: "1 Februari - 31 Juli 2026",
+      psb_entry_text: "mulai Agustus 2026",
+      requirements_title: "Berkas Persyaratan",
+      requirements_points: "Fotocopy KTP orang tua.|FC ijazah sekolah formal terakhir.|FC kartu keluarga.",
+      pricing_title: "Rincian Pembiayaan",
+      pricing_putra: "Rp. 1.875.000",
+      pricing_putri: "Rp. 1.925.000",
+      pricing_spp: "430K",
+      pricing_note: "Sudah termasuk SPP, makan 1 bulan, kitab madrasah diniyah, seragam, dan kegiatan selama 1 tahun.",
+      schedule_title: "Ritme harian santri PPSA",
+      schedule_lead: "Ritme harian ini memberi gambaran kegiatan santri dari malam hingga malam berikutnya, mencakup ibadah, sekolah formal, pengajian, madrasah diniyah, dan waktu belajar.",
+      donation_title: "Dukung pendidikan dan dakwah pesantren",
+      donation_lead: "Salurkan dukungan terbaik untuk pendidikan, pembinaan santri, pengadaan sarana belajar, dan kegiatan dakwah melalui program donasi resmi Pondok Pesantren Sunan Ampel.",
+      doa_title: "Aplikasi doa dan wirid digital PPSA",
+      doa_lead: "Aplikasi doa PPSA menghadirkan kumpulan doa dan wirid harian yang mudah diakses untuk santri, wali santri, dan jamaah, lengkap dengan dukungan jadwal shalat dan tasbih digital.",
+      doa_url: "https://ppsajombang.vercel.app",
+      contact_title: "Hubungi Pondok Pesantren Sunan Ampel",
+      contact_address: "Jl. Jaksa Agung Suprapto No.14, Jombang, Jawa Timur",
+      instagram_label: "@ppsa.jombang",
+      instagram_url: "https://www.instagram.com/ppsa.jombang/",
+      youtube_label: "Sunan Ampel Official",
+      youtube_url: "https://www.youtube.com/@ppsajombang9936",
+      whatsapp_1_label: "WhatsApp Gus Fattah",
+      whatsapp_1_number: "628999039882",
+      whatsapp_2_label: "WhatsApp Ning Faiq",
+      whatsapp_2_number: "6282223422532"
+    }
+  ],
   letters: [{ id: 1, letter_no: "001/PPSA/VI/2026", letter_date: "2026-06-01", type: "Keluar", subject: "Undangan Rapat Wali Santri", status: "terkirim" }],
   library: [{ id: 1, book_code: "BK-001", title: "Adab Penuntut Ilmu", author: "Tim PPSA", stock: 10, available: 8 }],
   dormitories: [{ id: 1, room_name: "Kamar Umar", building: "Asrama Putra", capacity: 12, occupied: 10, supervisor: "Ust. Hasan" }],
@@ -321,12 +410,12 @@ async function renderCrud(key) {
       <div class="toolbar-actions">
         <input id="searchInput" class="search-input" value="${esc(query)}" placeholder="Cari data..." />
         <button id="exportBtn" class="btn-secondary">Export CSV</button>
-        <button id="addBtn" class="btn-primary">Tambah Data</button>
+        <button id="addBtn" class="btn-primary">${module.singleton ? (rows.length ? "Edit Pengaturan" : "Buat Pengaturan") : "Tambah Data"}</button>
       </div>
     </div>
     <div class="card">${table(module.cols, rows, key)}</div>`;
 
-  document.getElementById("addBtn").onclick = () => openForm(key);
+  document.getElementById("addBtn").onclick = () => openForm(key, module.singleton ? (rows[0] || {}) : {});
   document.getElementById("exportBtn").onclick = () => exportCsv(key, module.cols, rows);
   document.getElementById("searchInput").oninput = debounce((event) => {
     state.filters[key] = event.target.value.trim();
@@ -402,7 +491,7 @@ function openForm(key, row = {}) {
         <button id="closeModal" type="button" class="btn-secondary">Tutup</button>
       </div>
       <form id="form" class="form-grid">
-        ${module.fields.map((fieldName) => field(fieldName, row[fieldName])).join("")}
+        ${module.fields.map((fieldName) => field(key, fieldName, row[fieldName])).join("")}
         <div class="full actions">
           <button class="btn-primary">Simpan</button>
           <button type="button" id="cancel" class="btn-secondary">Batal</button>
@@ -419,23 +508,26 @@ function openForm(key, row = {}) {
       if (body[name] != null) body[name] = Number(body[name] || 0);
     });
     if (body.is_published != null) body.is_published = Number(body.is_published);
+    if (body.is_active != null) body.is_active = Number(body.is_active);
     await callApi(`/api/${key}${row.id ? `/${row.id}` : ""}`, { method: row.id ? "PUT" : "POST", body: JSON.stringify(body) });
     closeModal();
     renderCrud(key);
   };
 }
 
-function field(name, value = "") {
-  if (["description", "body", "address", "notes", "summary"].includes(name)) {
+function field(key, name, value = "") {
+  if (["description", "body", "address", "notes", "summary", "focus_points", "required_points", "extra_points", "requirements_points", "profile_body_1", "profile_body_2", "hero_lead", "summary_lead", "program_section_lead", "registration_lead", "pricing_note", "schedule_lead", "donation_lead", "doa_lead", "activity"].includes(name)) {
     return `<div class="full"><label>${labels[name] || name}</label><textarea name="${name}">${esc(value)}</textarea></div>`;
   }
   if (name === "gender") return select(name, value, ["L", "P", "-"]);
-  if (name === "type") return select(name, value, ["masuk", "keluar", "Masuk", "Keluar"]);
+  if (name === "type" && key === "cash") return select(name, value, ["masuk", "keluar", "Masuk", "Keluar"]);
+  if (name === "type" && key === "contents") return select(name, value, ["article", "announcement"]);
   if (name === "status") return select(name, value, ["aktif", "nonaktif", "terjadwal", "selesai", "hadir", "izin", "sakit", "alpa", "lunas", "belum_lunas", "terkirim", "draft", "baik", "rusak"]);
   if (name === "follow_up_status") return select(name, value, ["baru", "diproses", "selesai", "ditutup"]);
   if (name === "is_published") return select(name, value, [1, 0]);
+  if (name === "is_active") return select(name, value, [1, 0]);
 
-  const numberFields = ["amount", "paid_amount", "total_donation", "last_donation", "stock", "available", "capacity", "occupied", "score", "purchase_year"];
+  const numberFields = ["amount", "paid_amount", "total_donation", "last_donation", "stock", "available", "capacity", "occupied", "score", "purchase_year", "sort_order", "target_amount"];
   const type = name.includes("date") ? "date" : (numberFields.includes(name) ? "number" : "text");
   return `<div><label>${labels[name] || name}</label><input name="${name}" type="${type}" value="${esc(value)}"></div>`;
 }
@@ -493,6 +585,8 @@ function exportCsv(key, cols, rows) {
 function fmt(col, value) {
   if (["amount", "paid_amount", "total_donation", "last_donation"].includes(col)) return rupiah(value);
   if (col === "is_published") return Number(value) ? '<span class="badge">Publik</span>' : '<span class="badge gray">Draft</span>';
+  if (col === "is_active") return Number(value) ? '<span class="badge">Aktif</span>' : '<span class="badge gray">Nonaktif</span>';
+  if (col === "follow_up_status") return `<span class="badge ${String(value).includes("baru") ? "gold" : ""}">${esc(value ?? "-")}</span>`;
   if (col === "status") return `<span class="badge ${String(value).includes("belum") ? "gold" : ""}">${esc(value ?? "-")}</span>`;
   return esc(value ?? "-");
 }

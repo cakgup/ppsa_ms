@@ -10,15 +10,15 @@
   <meta name="theme-color" content="#166534" />
   <title>Pondok Pesantren Sunan Ampel | Portal Resmi PPSA</title>
   <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="stylesheet" href="assets/portal.css?v=20260604b" />
+  <link rel="stylesheet" href="assets/portal.css?v=20260604c" />
 </head>
 <body>
   <header class="site-header">
     <a class="brand" href="#beranda" aria-label="Pondok Pesantren Sunan Ampel">
       <img src="https://raw.githubusercontent.com/cakgup/ppsa/main/assets/logo.png" alt="Logo Pondok Pesantren Sunan Ampel" />
       <span>
-        <strong>Pondok Pesantren Sunan Ampel</strong>
-        <small>Jl. Jaksa Agung Suprapto No.14, Jombang, Jawa Timur</small>
+        <strong id="siteName">Pondok Pesantren Sunan Ampel</strong>
+        <small id="siteTagline">Jl. Jaksa Agung Suprapto No.14, Jombang, Jawa Timur</small>
       </span>
     </a>
     <button class="nav-toggle" type="button" aria-label="Buka menu" aria-expanded="false">Menu</button>
@@ -35,21 +35,21 @@
   <main id="beranda">
     <section class="hero section-pad">
       <div class="hero-copy">
-        <p class="eyebrow">PSB 2026 Resmi Dibuka</p>
-        <h1>Penerimaan santri baru Pondok Pesantren Sunan Ampel Jombang.</h1>
-        <p class="lead">
+        <p id="heroEyebrow" class="eyebrow">PSB 2026 Resmi Dibuka</p>
+        <h1 id="heroTitle">Penerimaan santri baru Pondok Pesantren Sunan Ampel Jombang.</h1>
+        <p id="heroLead" class="lead">
           Pendaftaran dibuka mulai 1 Februari sampai 31 Juli 2026. Program unggulan meliputi Madrasah Diniyah
           dan Tahfidz Al-Qur'an gratis, dengan masuk pondok mulai Agustus 2026.
         </p>
         <div class="hero-actions">
-          <a class="btn-primary" href="#pendaftaran">Daftar Santri Baru</a>
-          <a class="btn-secondary" href="#program">Lihat Program</a>
+          <a id="heroPrimaryLink" class="btn-primary" href="#pendaftaran"><span id="heroPrimaryLabel">Daftar Santri Baru</span></a>
+          <a id="heroSecondaryLink" class="btn-secondary" href="#program"><span id="heroSecondaryLabel">Lihat Program</span></a>
         </div>
       </div>
       <div class="hero-card" aria-label="Ringkasan lembaga">
         <img class="hero-logo" src="https://raw.githubusercontent.com/cakgup/ppsa/main/assets/logo.png" alt="Logo PPSA" />
-        <h2>Ringkasan PSB 2026</h2>
-        <p>Pondok pesantren berbasis madrasah diniyah, pembentukan karakter, pengajian, dan program tahfidz terintegrasi.</p>
+        <h2 id="summaryTitle">Ringkasan PSB 2026</h2>
+        <p id="summaryLead">Pondok pesantren berbasis madrasah diniyah, pembentukan karakter, pengajian, dan program tahfidz terintegrasi.</p>
         <div class="mini-grid">
           <div><b>1985</b><small>Berdiri</small></div>
           <div><b>2</b><small>Program Utama</small></div>
@@ -62,32 +62,27 @@
     <section id="profil" class="section-pad split-section">
       <div>
         <p class="eyebrow">Profil Lembaga</p>
-        <h2>Pondok Pesantren Sunan Ampel</h2>
-        <p>
+        <h2 id="profileTitle">Pondok Pesantren Sunan Ampel</h2>
+        <p id="profileBody1">
           Pondok Pesantren Sunan Ampel adalah pondok pesantren yang berada di jantung kota Jombang dan telah berdiri
           sejak tahun 1985 oleh KH. Mahfudz Anwar.
         </p>
-        <p>
+        <p id="profileBody2">
           Saat ini Pondok Pesantren Sunan Ampel berada di bawah naungan pengasuh KH. Taufiqurrahman Muchit, dengan
           fokus pembentukan karakter melalui shalat berjamaah, pengajian, dan madrasah diniyah.
         </p>
       </div>
       <div class="info-card">
-        <h3>Fokus Pendidikan</h3>
-        <ul class="check-list">
-          <li>Madrasah diniyah dan pengajian Al-Qur'an.</li>
-          <li>Hafalan Juz Amma dan tahfidz Al-Qur'an.</li>
-          <li>Shalat jama'ah, tahajud, dan majelis shalawat.</li>
-          <li>Pembinaan akhlak, disiplin, dan kemandirian santri.</li>
-        </ul>
+        <h3 id="focusTitle">Fokus Pendidikan</h3>
+        <ul id="focusPoints" class="check-list"><li>Madrasah diniyah dan pengajian Al-Qur'an.</li></ul>
       </div>
     </section>
 
     <section id="program" class="section-pad alt-section">
       <div class="section-head">
         <p class="eyebrow">Program Unggulan</p>
-        <h2>Madrasah diniyah dan tahfidz gratis</h2>
-        <p>Program unggulan PPSA menekankan pendidikan diniyah, pembiasaan ibadah, dan jalur tahfidz yang terintegrasi dengan sekolah formal.</p>
+        <h2 id="programSectionTitle">Madrasah diniyah dan tahfidz gratis</h2>
+        <p id="programSectionLead">Program unggulan PPSA menekankan pendidikan diniyah, pembiasaan ibadah, dan jalur tahfidz yang terintegrasi dengan sekolah formal.</p>
       </div>
       <div id="programList" class="card-grid">
         <article class="feature-card"><h3>Madrasah Diniyah</h3><p>Pembelajaran dasar agama, kitab, pengajian, dan pembentukan karakter santri dalam ritme keseharian pondok.</p></article>
@@ -96,24 +91,12 @@
       </div>
       <div class="two-columns spaced">
         <div class="info-card">
-          <h3>Kegiatan Wajib</h3>
-          <ul class="check-list">
-            <li>Madrasah diniyah.</li>
-            <li>Hafalan Juz Amma.</li>
-            <li>Shalat tahajud dan shalat jama'ah.</li>
-            <li>Pengajian Al-Qur'an dan kitab kuning.</li>
-            <li>Majelis shalawat.</li>
-          </ul>
+          <h3 id="requiredTitle">Kegiatan Wajib</h3>
+          <ul id="requiredPoints" class="check-list"><li>Madrasah diniyah.</li></ul>
         </div>
         <div class="info-card">
-          <h3>Kegiatan Tambahan</h3>
-          <ul class="check-list">
-            <li>Tahfidz Al-Qur'an.</li>
-            <li>Pelatihan baca Qur'an metode Yanbu'a.</li>
-            <li>Pelatihan bilal dan imam shalat.</li>
-            <li>Khitobah.</li>
-            <li>Mengurus jenazah.</li>
-          </ul>
+          <h3 id="extraTitle">Kegiatan Tambahan</h3>
+          <ul id="extraPoints" class="check-list"><li>Tahfidz Al-Qur'an.</li></ul>
         </div>
       </div>
     </section>
@@ -121,30 +104,26 @@
     <section id="pendaftaran" class="section-pad split-section">
       <div>
         <p class="eyebrow">Penerimaan Santri Baru</p>
-        <h2>Pendaftaran dibuka sampai 31 Juli 2026</h2>
-        <p>
+        <h2 id="registrationTitle">Pendaftaran dibuka sampai 31 Juli 2026</h2>
+        <p id="registrationLead">
           Calon wali santri dapat mengisi formulir pendaftaran awal untuk memulai proses PSB. Panitia akan meninjau data yang masuk dan menghubungi wali santri untuk tahapan berikutnya.
         </p>
         <div class="info-grid">
           <article class="info-card">
-            <h3>Jadwal PSB</h3>
-            <p><strong>Pendaftaran:</strong> 1 Februari - 31 Juli 2026</p>
-            <p><strong>Masuk pondok:</strong> mulai Agustus 2026</p>
+            <h3 id="psbCardTitle">Jadwal PSB</h3>
+            <p><strong>Pendaftaran:</strong> <span id="psbRegistrationText">1 Februari - 31 Juli 2026</span></p>
+            <p><strong>Masuk pondok:</strong> <span id="psbEntryText">mulai Agustus 2026</span></p>
           </article>
           <article class="info-card">
-            <h3>Berkas Persyaratan</h3>
-            <ul class="check-list">
-              <li>Fotocopy KTP orang tua.</li>
-              <li>FC ijazah sekolah formal terakhir.</li>
-              <li>FC kartu keluarga.</li>
-            </ul>
+            <h3 id="requirementsTitle">Berkas Persyaratan</h3>
+            <ul id="requirementsPoints" class="check-list"><li>Fotocopy KTP orang tua.</li></ul>
           </article>
           <article class="info-card">
-            <h3>Rincian Pembiayaan</h3>
-            <p><strong>Pendaftaran putra:</strong> Rp. 1.875.000</p>
-            <p><strong>Pendaftaran putri:</strong> Rp. 1.925.000</p>
-            <p><strong>SPP bulanan:</strong> Rp. 430.000</p>
-            <p class="muted-note">Sudah termasuk SPP, makan 1 bulan, kitab madrasah diniyah, seragam, dan kegiatan selama 1 tahun.</p>
+            <h3 id="pricingTitle">Rincian Pembiayaan</h3>
+            <p><strong>Pendaftaran putra:</strong> <span id="pricingPutra">Rp. 1.875.000</span></p>
+            <p><strong>Pendaftaran putri:</strong> <span id="pricingPutri">Rp. 1.925.000</span></p>
+            <p><strong>SPP bulanan:</strong> <span id="pricingSpp">430K</span></p>
+            <p id="pricingNote" class="muted-note">Sudah termasuk SPP, makan 1 bulan, kitab madrasah diniyah, seragam, dan kegiatan selama 1 tahun.</p>
           </article>
         </div>
       </div>
@@ -174,25 +153,10 @@
     <section id="jadwal" class="section-pad">
       <div class="section-head">
         <p class="eyebrow">Jadwal Kegiatan Formal</p>
-        <h2>Ritme harian santri PPSA</h2>
-        <p>Ritme harian ini memberi gambaran kegiatan santri dari malam hingga malam berikutnya, mencakup ibadah, sekolah formal, pengajian, madrasah diniyah, dan waktu belajar.</p>
+        <h2 id="scheduleTitle">Ritme harian santri PPSA</h2>
+        <p id="scheduleLead">Ritme harian ini memberi gambaran kegiatan santri dari malam hingga malam berikutnya, mencakup ibadah, sekolah formal, pengajian, madrasah diniyah, dan waktu belajar.</p>
       </div>
-      <div class="schedule-grid">
-        <article class="stack-item"><strong>03.00 - 04.30</strong><p>Shalat malam.</p></article>
-        <article class="stack-item"><strong>04.30 - 05.00</strong><p>Shalat subuh berjama'ah.</p></article>
-        <article class="stack-item"><strong>05.00 - 06.00</strong><p>Pengajian Al-Qur'an dan majelis shalawat pada Jumat pagi.</p></article>
-        <article class="stack-item"><strong>06.00 - 15.00</strong><p>Kegiatan di sekolah untuk santri formal.</p></article>
-        <article class="stack-item"><strong>08.30 - 09.30</strong><p>Pengajian bandongan pada Ahad pagi.</p></article>
-        <article class="stack-item"><strong>15.00 - 15.30</strong><p>Persiapan shalat Ashar.</p></article>
-        <article class="stack-item"><strong>15.30 - 16.00</strong><p>Shalat Ashar berjama'ah.</p></article>
-        <article class="stack-item"><strong>16.00 - 17.00</strong><p>Pengajian bandongan sore.</p></article>
-        <article class="stack-item"><strong>17.45 - 18.00</strong><p>Shalat Maghrib berjama'ah.</p></article>
-        <article class="stack-item"><strong>18.15 - 19.00</strong><p>Pengajian Tafsir Jalalain.</p></article>
-        <article class="stack-item"><strong>19.00 - 19.30</strong><p>Shalat Isya' berjama'ah.</p></article>
-        <article class="stack-item"><strong>19.45 - 21.00</strong><p>Madrasah diniyah.</p></article>
-        <article class="stack-item"><strong>21.00 - 22.00</strong><p>Jam belajar.</p></article>
-        <article class="stack-item"><strong>22.00 - 03.00</strong><p>Tidur malam.</p></article>
-      </div>
+      <div id="scheduleList" class="schedule-grid"></div>
     </section>
 
     <section id="berita" class="section-pad alt-section">
@@ -215,8 +179,8 @@
     <section id="doa" class="section-pad doa-section">
       <div>
         <p class="eyebrow">Majmu'ah ad-Du'a</p>
-        <h2>Aplikasi doa dan wirid digital PPSA</h2>
-        <p>
+        <h2 id="doaTitle">Aplikasi doa dan wirid digital PPSA</h2>
+        <p id="doaLead">
           Aplikasi doa PPSA menghadirkan kumpulan doa dan wirid harian yang mudah diakses untuk santri, wali santri, dan jamaah, lengkap dengan dukungan jadwal shalat dan tasbih digital.
         </p>
         <a class="btn-primary" data-doa-link href="https://cakgup.github.io/ppsa/">Buka Aplikasi Doa</a>
@@ -232,8 +196,8 @@
     <section id="donasi" class="section-pad split-section">
       <div>
         <p class="eyebrow">Donasi, Infaq, dan Wakaf</p>
-        <h2>Dukung pendidikan dan dakwah pesantren</h2>
-        <p>
+        <h2 id="donationTitle">Dukung pendidikan dan dakwah pesantren</h2>
+        <p id="donationLead">
           Salurkan dukungan terbaik untuk pendidikan, pembinaan santri, pengadaan sarana belajar, dan kegiatan dakwah melalui program donasi resmi Pondok Pesantren Sunan Ampel.
         </p>
         <div id="donationList" class="stack-list"></div>
@@ -253,38 +217,38 @@
     <section id="kontak" class="section-pad alt-section contact-section">
       <div class="section-head">
         <p class="eyebrow">Kontak Resmi</p>
-        <h2>Hubungi Pondok Pesantren Sunan Ampel</h2>
+        <h2 id="contactTitle">Hubungi Pondok Pesantren Sunan Ampel</h2>
       </div>
       <div class="two-columns">
         <div class="info-card">
           <h3>Informasi Kontak</h3>
-          <p><strong>Alamat:</strong> Jl. Jaksa Agung Suprapto No.14, Jombang, Jawa Timur</p>
+          <p><strong>Alamat:</strong> <span id="contactAddress">Jl. Jaksa Agung Suprapto No.14, Jombang, Jawa Timur</span></p>
           <div class="contact-links">
-            <a class="contact-link social instagram" href="https://www.instagram.com/ppsa.jombang/" target="_blank" rel="noreferrer">
+            <a id="instagramLink" class="contact-link social instagram" href="https://www.instagram.com/ppsa.jombang/" target="_blank" rel="noreferrer">
               <span class="contact-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" focusable="false"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5"></rect><circle cx="12" cy="12" r="4.2"></circle><circle cx="17.4" cy="6.7" r="1.1" fill="currentColor" stroke="none"></circle></svg>
               </span>
-              <span><strong>Instagram</strong><small>@ppsa.jombang</small></span>
+              <span><strong>Instagram</strong><small id="instagramLabel">@ppsa.jombang</small></span>
             </a>
-            <a class="contact-link social youtube" href="https://www.youtube.com/@ppsajombang9936" target="_blank" rel="noreferrer">
+            <a id="youtubeLink" class="contact-link social youtube" href="https://www.youtube.com/@ppsajombang9936" target="_blank" rel="noreferrer">
               <span class="contact-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" focusable="false"><path d="M21 8.2a2.8 2.8 0 0 0-2-2c-1.8-.5-8-.5-8-.5s-6.2 0-8 .5a2.8 2.8 0 0 0-2 2A29 29 0 0 0 .5 12a29 29 0 0 0 .5 3.8 2.8 2.8 0 0 0 2 2c1.8.5 8 .5 8 .5s6.2 0 8-.5a2.8 2.8 0 0 0 2-2A29 29 0 0 0 21.5 12a29 29 0 0 0-.5-3.8Z"></path><path d="m10 15.4 5.2-3.4L10 8.6Z" fill="currentColor" stroke="none"></path></svg>
               </span>
-              <span><strong>YouTube</strong><small>Sunan Ampel Official</small></span>
+              <span><strong>YouTube</strong><small id="youtubeLabel">Sunan Ampel Official</small></span>
             </a>
           </div>
           <div class="contact-links">
-            <a class="contact-link whatsapp" href="https://wa.me/628999039882" target="_blank" rel="noreferrer">
+            <a id="whatsappLink1" class="contact-link whatsapp" href="https://wa.me/628999039882" target="_blank" rel="noreferrer">
               <span class="contact-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" focusable="false"><path d="M20.5 11.8A8.5 8.5 0 0 1 7.9 19.1L3 20.5l1.4-4.8a8.5 8.5 0 1 1 16.1-3.9Z"></path><path d="M9.2 7.8c-.2-.5-.4-.5-.7-.5h-.6c-.2 0-.6.1-.9.4s-1 1-1 2.4 1 2.8 1.1 3 .2.3.4.6c.4.6 1 1.5 2.4 2.1 1.4.6 1.7.5 2 .5.3 0 1-.4 1.2-.8.2-.4.2-.8.2-.8s-.1-.1-.3-.2l-1.3-.6c-.2-.1-.4-.1-.5.1l-.5.6c-.1.1-.2.2-.5.1-.3-.1-1-.4-1.8-1.2-.7-.7-1.1-1.5-1.2-1.8-.1-.3 0-.4.1-.5l.4-.5c.1-.1.2-.3.3-.4.1-.1.1-.3 0-.4l-.8-1.5Z" fill="currentColor" stroke="none"></path></svg>
               </span>
-              <span><strong>WhatsApp Gus Fattah</strong><small>+62 899-9039-882</small></span>
+              <span><strong id="whatsappLabel1">WhatsApp Gus Fattah</strong><small id="whatsappNumber1">+62 899-9039-882</small></span>
             </a>
-            <a class="contact-link whatsapp" href="https://wa.me/6282223422532" target="_blank" rel="noreferrer">
+            <a id="whatsappLink2" class="contact-link whatsapp" href="https://wa.me/6282223422532" target="_blank" rel="noreferrer">
               <span class="contact-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" focusable="false"><path d="M20.5 11.8A8.5 8.5 0 0 1 7.9 19.1L3 20.5l1.4-4.8a8.5 8.5 0 1 1 16.1-3.9Z"></path><path d="M9.2 7.8c-.2-.5-.4-.5-.7-.5h-.6c-.2 0-.6.1-.9.4s-1 1-1 2.4 1 2.8 1.1 3 .2.3.4.6c.4.6 1 1.5 2.4 2.1 1.4.6 1.7.5 2 .5.3 0 1-.4 1.2-.8.2-.4.2-.8.2-.8s-.1-.1-.3-.2l-1.3-.6c-.2-.1-.4-.1-.5.1l-.5.6c-.1.1-.2.2-.5.1-.3-.1-1-.4-1.8-1.2-.7-.7-1.1-1.5-1.2-1.8-.1-.3 0-.4.1-.5l.4-.5c.1-.1.2-.3.3-.4.1-.1.1-.3 0-.4l-.8-1.5Z" fill="currentColor" stroke="none"></path></svg>
               </span>
-              <span><strong>WhatsApp Ning Faiq</strong><small>+62 822-2342-2532</small></span>
+              <span><strong id="whatsappLabel2">WhatsApp Ning Faiq</strong><small id="whatsappNumber2">+62 822-2342-2532</small></span>
             </a>
           </div>
         </div>
@@ -312,7 +276,7 @@
     </div>
   </footer>
 
-  <script src="assets/config.js?v=20260604a"></script>
-  <script src="assets/portal.js?v=20260604a"></script>
+  <script src="assets/config.js?v=20260604b"></script>
+  <script src="assets/portal.js?v=20260604b"></script>
 </body>
 </html>
