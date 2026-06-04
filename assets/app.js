@@ -14,8 +14,7 @@ const state = {
 const groups = [
   ["Administrasi Web Portal", [["portal_settings", "Pengaturan Portal", "Ready"], ["programs", "Program Portal", "Ready"], ["portal_schedule", "Jadwal Portal", "Ready"], ["donation_programs", "Program Donasi", "Ready"], ["activities", "Kegiatan & Publikasi", "Ready"], ["admissions", "Leads Pendaftaran", "Ready"], ["contact_messages", "Pesan Masuk", "Ready"], ["donation_confirmations", "Konfirmasi Donasi", "Ready"]]],
   ["Administrasi Operasional Pondok", [["dashboard", "Dashboard", "Ready"], ["branches", "Cabang/Unit", "Ready"], ["students", "Santri", "Ready"], ["guardians", "Wali Santri", "Ready"], ["teachers", "Pengajar/Ustadz", "Ready"], ["classes", "Kelas", "Ready"], ["subjects", "Mata Pelajaran", "Ready"], ["grades", "Nilai/Rapor", "Ready"], ["schedules", "Jadwal Pelajaran", "Ready"], ["attendance", "Absensi QR", "Ready"], ["tahfidz", "Tahfidz Monitoring", "Ready"], ["cash", "Buku Kas", "Ready"], ["payments", "SPP/Iuran", "Ready"], ["donors", "Donatur/Infaq", "Ready"], ["letters", "Surat Menyurat", "Ready"], ["library", "Perpustakaan", "Ready"], ["dormitories", "Asrama/Kamar", "Ready"], ["inventory", "Inventaris", "Ready"]]],
-  ["Pengembangan", [["profile", "Profil Lembaga", "Demo"], ["gallery", "Galeri", "Demo"], ["lms", "LMS Pembelajaran", "Soon"]]],
-  ["Sistem", [["users", "User & Role", "Ready"], ["audit", "Audit Log", "Ready"], ["settings", "Pengaturan", "Demo"], ["backup", "Backup", "Soon"]]]
+  ["Sistem", [["users", "User & Role", "Ready"]]]
 ];
 
 const meta = {
@@ -361,7 +360,6 @@ async function renderPage(page) {
   state.page = page;
   renderNav();
   if (page === "dashboard") return renderDashboard();
-  if (["lms", "whatsapp", "ai", "mobile", "backup", "settings", "gallery", "profile"].includes(page)) return renderComing(page);
   return renderCrud(page);
 }
 
@@ -459,34 +457,6 @@ async function renderCrud(key) {
   document.querySelectorAll("[data-del]").forEach((button) => {
     button.onclick = () => deleteRow(key, button.dataset.del);
   });
-}
-
-function renderComing(key) {
-  const names = {
-    lms: "LMS Pembelajaran",
-    whatsapp: "WhatsApp Gateway",
-    ai: "AI Chatbot",
-    mobile: "Mobile App Android/TWA",
-    backup: "Backup Terjadwal",
-    settings: "Pengaturan Lembaga",
-    gallery: "Galeri Media",
-    grades: "Nilai/Rapor",
-    profile: "Profil Lembaga"
-  };
-  setTitle(names[key] || "Roadmap", "Modul disiapkan untuk pengembangan tahap lanjut");
-  document.getElementById("content").innerHTML = `
-    <div class="card coming">
-      <div class="icon">MS</div>
-      <div>
-        <h2>${names[key]}</h2>
-        <p class="muted">Modul ini sudah masuk struktur navigasi agar arah pengembangan sistem terlihat utuh saat demo dan presentasi.</p>
-        <div class="feature-list">
-          <div><b>Siap UI</b><br><span class="muted">Layout dasar sudah mengikuti pola modul lain.</span></div>
-          <div><b>Siap API</b><br><span class="muted">Endpoint dapat ditambahkan secara modular.</span></div>
-          <div><b>Siap Database</b><br><span class="muted">Skema tabel bisa diperluas dari metadata modul.</span></div>
-        </div>
-      </div>
-    </div>`;
 }
 
 function table(cols, rows, key) {
