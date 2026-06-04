@@ -4,22 +4,22 @@ const DOA_URL = PORTAL_CONFIG.DOA_APP_URL || "https://cakgup.github.io/ppsa/";
 
 const fallback = {
   programs: [
-    { title: "Tahfidz Al-Qur'an", description: "Pembinaan hafalan, murajaah, setoran, dan evaluasi capaian santri." },
-    { title: "Tahsin & Tilawah", description: "Pembelajaran bacaan Al-Qur'an yang benar, tartil, dan beradab." },
-    { title: "Madrasah Diniyah", description: "Penguatan ilmu fikih, akidah, akhlak, bahasa Arab, dan kajian kitab." }
+    { title: "Madrasah Diniyah", description: "Program unggulan pembentukan karakter melalui pengajian, ibadah berjama'ah, dan pembelajaran diniyah." },
+    { title: "Tahfidz Al-Qur'an Gratis", description: "Setoran Al-Qur'an, muroqobah 5 juz, imtihan syafawi, dan target 30 juz bersanad." },
+    { title: "Sekolah Formal Terintegrasi", description: "Santri memperoleh ijazah sekolah formal dan syahadah tahfidz dalam satu jalur pembinaan." }
   ],
   news: [
-    { title: "Portal resmi PPSA mulai disiapkan", date: "2026-06-04", summary: "Portal publik dikembangkan untuk menyatukan informasi pesantren, dashboard internal, dan aplikasi doa digital." },
-    { title: "Ekosistem digital pesantren", date: "2026-06-04", summary: "Pengembangan diarahkan menggunakan GitHub Pages untuk front-end dan Cloudflare D1 untuk database." }
+    { title: "PSB Pondok Pesantren Sunan Ampel dibuka", date: "2026-02-01", summary: "Pendaftaran santri baru dibuka mulai 1 Februari sampai 31 Juli 2026." },
+    { title: "Program tahfidz gratis PPSA", date: "2026-02-01", summary: "Program tahfidz gratis tetap menjadi unggulan dengan pembinaan terintegrasi bersama sekolah formal." }
   ],
   announcements: [
-    { title: "Informasi pendaftaran santri baru", date: "2026-06-04", summary: "Calon wali santri dapat mengisi formulir minat pada halaman pendaftaran." },
-    { title: "Aplikasi doa digital PPSA", date: "2026-06-04", summary: "Aplikasi doa dan wirid dapat diakses melalui menu Doa & Wirid." }
+    { title: "Batas akhir pendaftaran", date: "2026-07-31", summary: "Pendaftaran santri baru ditutup pada 31 Juli 2026." },
+    { title: "Masuk pondok mulai Agustus 2026", date: "2026-08-01", summary: "Santri baru mulai masuk pondok pada Agustus 2026 sesuai agenda penerimaan." }
   ],
   donations: [
-    { title: "Beasiswa Santri", summary: "Dukungan untuk santri yang membutuhkan bantuan biaya pendidikan." },
-    { title: "Wakaf Al-Qur'an", summary: "Program pengadaan mushaf dan bahan belajar Al-Qur'an." },
-    { title: "Operasional Dakwah", summary: "Dukungan kegiatan pendidikan, kajian, dan layanan pesantren." }
+    { title: "Beasiswa Santri", summary: "Dukungan biaya pendidikan untuk santri yang membutuhkan." },
+    { title: "Wakaf Al-Qur'an", summary: "Program pengadaan mushaf dan bahan belajar Al-Qur'an untuk santri." },
+    { title: "Operasional Pondok", summary: "Dukungan kegiatan pendidikan, madrasah diniyah, dan layanan pondok." }
   ]
 };
 
