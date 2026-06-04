@@ -66,7 +66,7 @@ const meta = {
   admissions: { title: "Leads Pendaftaran", subtitle: "Form minat santri baru dari portal publik", cols: ["id", "created_at", "student_name", "guardian_name", "phone", "program", "follow_up_status"], fields: ["student_name", "gender", "birth_date", "guardian_name", "phone", "program", "address", "notes", "follow_up_status", "follow_up_notes", "handled_by", "handled_at"], readOnlyFields: ["student_name", "gender", "birth_date", "guardian_name", "phone", "program", "address", "notes", "created_at"], editFields: ["follow_up_status", "follow_up_notes", "handled_by", "handled_at"], allowCreate: false, allowDelete: false, actionLabel: "Tindak Lanjut" },
   contact_messages: { title: "Pesan Masuk", subtitle: "Pesan publik dari halaman kontak portal", cols: ["id", "created_at", "name", "contact", "subject", "follow_up_status"], fields: ["name", "contact", "subject", "message", "follow_up_status", "follow_up_notes", "handled_by", "handled_at"], readOnlyFields: ["name", "contact", "subject", "message", "created_at"], editFields: ["follow_up_status", "follow_up_notes", "handled_by", "handled_at"], allowCreate: false, allowDelete: false, actionLabel: "Tindak Lanjut" },
   donation_confirmations: { title: "Konfirmasi Donasi", subtitle: "Konfirmasi transfer dan donasi dari portal publik", cols: ["id", "created_at", "donor_name", "phone", "amount", "follow_up_status"], fields: ["donor_name", "phone", "amount", "method", "notes", "follow_up_status", "follow_up_notes", "handled_by", "handled_at"], readOnlyFields: ["donor_name", "phone", "amount", "method", "notes", "created_at"], editFields: ["follow_up_status", "follow_up_notes", "handled_by", "handled_at"], allowCreate: false, allowDelete: false, actionLabel: "Tindak Lanjut" },
-  users: { title: "User & Role", subtitle: "Akun pengguna dan hak akses sistem", cols: ["id", "name", "email", "role", "status"], fields: ["name", "email", "role", "status"] },
+  users: { title: "User & Role", subtitle: "Akun pengguna dan hak akses sistem", cols: ["id", "name", "email", "role", "status"], fields: ["name", "email", "role", "status", "password"] },
   audit: { title: "Audit Log", subtitle: "Jejak aktivitas pengguna", cols: ["id", "created_at", "user_name", "action", "module", "description"], fields: ["created_at", "user_name", "action", "module", "description"] }
 };
 
@@ -85,7 +85,7 @@ const labels = {
   letter_date: "Tanggal Surat", sender_receiver: "Pengirim/Penerima", subject: "Perihal", summary: "Ringkasan",
   book_code: "Kode Buku", author: "Penulis", stock: "Stok", available: "Tersedia", room_name: "Kamar",
   building: "Gedung", occupied: "Terisi", supervisor: "Pembina", asset_code: "Kode Aset", condition_status: "Kondisi",
-  purchase_year: "Tahun Beli", email: "Email", role: "Role", created_at: "Waktu", user_name: "User", action: "Aksi", module: "Modul",
+  purchase_year: "Tahun Beli", email: "Email", role: "Role", password: "Password", created_at: "Waktu", user_name: "User", action: "Aksi", module: "Modul",
   relation: "Relasi", occupation: "Pekerjaan", program: "Program", contact: "Kontak", message: "Pesan",
   donor_name: "Donatur", method: "Metode", follow_up_status: "Status Follow Up", follow_up_notes: "Catatan Follow Up",
   handled_by: "Ditangani Oleh", handled_at: "Ditangani Pada", type: "Tipe", summary: "Ringkasan", sort_order: "Urutan", time_slot: "Jam",
@@ -532,6 +532,7 @@ function openForm(key, row = {}) {
     });
     if (body.is_published != null) body.is_published = Number(body.is_published);
     if (body.is_active != null) body.is_active = Number(body.is_active);
+    if (key === "users" && !String(body.password || "").trim()) delete body.password;
     await callApi(`/api/${key}${row.id ? `/${row.id}` : ""}`, { method: row.id ? "PUT" : "POST", body: JSON.stringify(body) });
     closeModal();
     renderCrud(key);
@@ -582,6 +583,7 @@ function field(key, name, value = "") {
     return `<div class="full"><label>${labels[name] || name}</label><textarea name="${name}">${esc(value)}</textarea></div>`;
   }
   if (name === "gender") return select(name, value, ["L", "P", "-"]);
+  if (name === "role") return select(name, value || "operator", ["admin", "operator", "akademik", "keuangan", "pengasuh", "portal_admin"]);
   if (name === "type" && key === "cash") return select(name, value, ["masuk", "keluar", "Masuk", "Keluar"]);
   if (name === "type" && key === "contents") return select(name, value, ["article", "announcement"]);
   if (name === "content_type" && key === "activities") return select(name, value, ["activity", "article", "announcement"]);
@@ -592,8 +594,9 @@ function field(key, name, value = "") {
   if (name === "is_active") return select(name, value, [1, 0]);
 
   const numberFields = ["amount", "paid_amount", "total_donation", "last_donation", "stock", "available", "capacity", "occupied", "score", "purchase_year", "sort_order", "target_amount", "assignment_score", "midterm_score", "final_exam_score", "final_score"];
-  const type = name.includes("date") ? "date" : (numberFields.includes(name) ? "number" : "text");
-  return `<div><label>${labels[name] || name}</label><input name="${name}" type="${type}" value="${esc(value)}"></div>`;
+  const type = name === "password" ? "password" : (name.includes("date") ? "date" : (numberFields.includes(name) ? "number" : "text"));
+  const placeholder = key === "users" && name === "password" ? ' placeholder="Kosongkan jika tidak diubah"' : "";
+  return `<div><label>${labels[name] || name}</label><input name="${name}" type="${type}" value="${esc(value)}"${placeholder}></div>`;
 }
 
 function select(name, value, options) {
