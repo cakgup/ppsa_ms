@@ -309,7 +309,7 @@ function addAudit(action, module, description) {
   const nextId = Math.max(0, ...demo.audit.map((item) => Number(item.id || 0))) + 1;
   demo.audit.unshift({
     id: nextId,
-    created_at: new Date().toLocaleString("id-ID"),
+    created_at: formatLongDate(new Date()),
     user_name: state.user?.name || "Administrator PPSA",
     action,
     module,
@@ -322,6 +322,27 @@ function dashboardData() {
   const cashOut = demo.cash.filter((item) => item.type === "keluar").reduce((sum, item) => sum + Number(item.amount || 0), 0);
   const paid = demo.payments.reduce((sum, item) => sum + Number(item.paid_amount || 0), 0);
   const billed = demo.payments.reduce((sum, item) => sum + Number(item.amount || 0), 0);
+  const studentsByGender = summarizeGender(demo.students);
+  const teachersByGender = summarizeGender(demo.teachers);
+  const classDistribution = groupCount(demo.students, "class_name");
+  const paymentStatus = groupByLabel(demo.payments.map((item) => ({ label: paymentStatusLabel(item.status), total: 1 })));
+  const attendanceStatus = groupByLabel(demo.attendance.map((item) => ({ label: attendanceStatusLabel(item.status), total: 1 })));
+  const tahfidzByClass = groupAverageByClass(demo.tahfidz, demo.students);
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - 30);
+  const cashFlow = demo.cash
+    .filter((item) => {
+      const date = new Date(normalizeDateInput(item.trx_date));
+      return !Number.isNaN(date.getTime()) && date >= cutoff;
+    })
+    .reduce((map, item) => {
+      const key = item.trx_date || "-";
+      const bucket = map.get(key) || { label: key, incoming: 0, outgoing: 0 };
+      if (String(item.type).toLowerCase() === "masuk") bucket.incoming += Number(item.amount || 0);
+      else bucket.outgoing += Number(item.amount || 0);
+      map.set(key, bucket);
+      return map;
+    }, new Map());
 
   return {
     totals: {
@@ -335,7 +356,18 @@ function dashboardData() {
       payment_ratio: billed ? Math.round((paid / billed) * 100) : 0
     },
     latestActivities: demo.activities.slice(0, 5),
-    chart: [72, 80, 88, 79, 92, 86]
+    chart: [72, 80, 88, 79, 92, 86],
+    composition: {
+      students: studentsByGender,
+      teachers: teachersByGender
+    },
+    analytics: {
+      class_distribution: classDistribution,
+      payment_status: paymentStatus,
+      cash_flow: Array.from(cashFlow.values()).sort((a, b) => String(a.label).localeCompare(String(b.label))).slice(-6),
+      attendance_status: attendanceStatus,
+      tahfidz_by_class: tahfidzByClass
+    }
   };
 }
 
@@ -385,35 +417,45 @@ async function renderDashboard() {
     payment_ratio: 0,
     ...(data.totals || {})
   };
+  const composition = {
+    students: { male: 0, female: 0, other: 0, ...(data.composition?.students || {}) },
+    teachers: { male: 0, female: 0, other: 0, ...(data.composition?.teachers || {}) }
+  };
+  const analytics = {
+    class_distribution: [],
+    payment_status: [],
+    cash_flow: [],
+    attendance_status: [],
+    tahfidz_by_class: [],
+    ...(data.analytics || {})
+  };
   setTitle("Dashboard Eksekutif", "Ringkasan operasional, akademik, keuangan, dan dakwah PPSA");
 
   document.getElementById("content").innerHTML = `
-    <section class="grid">
-      ${metricCard("Santri Aktif", totals.students ?? 0)}
-      ${metricCard("Pengajar", totals.teachers ?? 0)}
-      ${metricCard("Kelas", totals.classes ?? 0)}
-      ${metricCard("Saldo Kas", rupiah(totals.cash_balance ?? 0))}
+    <section class="dashboard-metric-row spaced">
+      ${summaryActionCard("Saldo Kas", rupiah(totals.cash_balance ?? 0), DEMO_MODE ? "Reset Data Lokal" : "Muat Ulang Data")}
+    </section>
+    <section class="spaced">
+      ${cashFlowCard("Kas Masuk vs Kas Keluar", "Perbandingan arus kas selama 1 bulan terakhir.", analytics.cash_flow)}
+    </section>
+    <section class="dashboard-pie-row spaced">
+      ${pieCard("Sebaran Santri", composition.students)}
+      ${pieCard("Sebaran Pengajar", composition.teachers)}
+      ${statusDonutCard("Status Pembayaran SPP", "Status pembayaran tagihan santri.", analytics.payment_status, "total", {
+        Lunas: "var(--green)",
+        Cicil: "var(--gold)",
+        Belum: "#dc2626"
+      })}
+      ${statusDonutCard("Status Absensi", "Ringkasan kehadiran santri.", analytics.attendance_status, "total", {
+        Hadir: "var(--green)",
+        Izin: "var(--gold)",
+        Sakit: "#60a5fa",
+        Alpha: "#dc2626"
+      })}
     </section>
     <section class="grid-2 spaced">
-      <div class="card">
-        <div class="card-head">
-          <div>
-            <h3>Tren Kehadiran 6 Pekan</h3>
-            <p class="muted">Ringkasan kehadiran berdasarkan data absensi yang tercatat.</p>
-          </div>
-        </div>
-        <div class="chart">${data.chart.map((value, index) => `<div class="bar" style="height:${value}%"><b>${value}%</b><span>P${index + 1}</span></div>`).join("")}</div>
-      </div>
-      <div class="card">
-        <h3>Indikator Utama</h3>
-        <div class="stat-list">
-          <div><span>Kehadiran rata-rata</span><b>${totals.attendance_present ?? 0}%</b></div>
-          <div><span>Skor tahfidz rata-rata</span><b>${totals.tahfidz_score ?? 0}</b></div>
-          <div><span>Rasio pembayaran</span><b>${totals.payment_ratio ?? 0}%</b></div>
-          <div><span>Tagihan belum lunas</span><b>${totals.unpaid ?? 0}</b></div>
-        </div>
-        <button class="btn-secondary wide" id="refreshDashboardBtn">${DEMO_MODE ? "Reset Data Lokal" : "Muat Ulang Data"}</button>
-      </div>
+      ${horizontalBarCard("Santri per Kelas", "Sebaran santri aktif per kelas yang tercatat.", analytics.class_distribution, "total", (value) => `${value} santri`)}
+      ${horizontalBarCard("Capaian Tahfidz", "Rata-rata nilai tahfidz per kelas untuk memudahkan pembacaan capaian pembinaan.", analytics.tahfidz_by_class, "score", (value) => `${value}`)}
     </section>
     <section class="card spaced">
       <div class="card-head">
@@ -479,24 +521,35 @@ async function renderCrud(key) {
 
 function table(cols, rows, key) {
   const module = key ? meta[key] : null;
-  const emptyColspan = cols.length + (key ? 1 : 0);
-  const currentSort = state.sorts[key] || {};
+  const dataCols = cols.filter((col) => col !== "id");
+  const emptyColspan = dataCols.length + 1 + (key ? 1 : 0);
+  const currentSort = state.sorts[key] || { col: "id", direction: "asc" };
   return `
     <div class="table-wrap">
       <table>
         <thead>
-          <tr>${cols.map((col) => `
+          <tr>
             <th>
-              <button type="button" class="sort-head" data-sort="${col}">
-                <span>${labels[col] || col}</span>
-                <span class="sort-mark">${currentSort.col === col ? (currentSort.direction === "asc" ? "↑" : "↓") : (col === "id" ? "↕" : "")}</span>
+              <button type="button" class="sort-head" data-sort="id">
+                <span>No.</span>
+                <span class="sort-mark">${currentSort.col === "id" ? (currentSort.direction === "asc" ? "↑" : "↓") : "↕"}</span>
               </button>
-            </th>`).join("")}${key ? "<th>Aksi</th>" : ""}</tr>
+            </th>
+            ${dataCols.map((col) => `
+              <th>
+                <button type="button" class="sort-head" data-sort="${col}">
+                  <span>${labels[col] || col}</span>
+                  <span class="sort-mark">${currentSort.col === col ? (currentSort.direction === "asc" ? "↑" : "↓") : "↕"}</span>
+                </button>
+              </th>`).join("")}
+            ${key ? "<th>Aksi</th>" : ""}
+          </tr>
         </thead>
         <tbody>
-          ${rows.length ? rows.map((row) => `
+          ${rows.length ? rows.map((row, index) => `
             <tr>
-              ${cols.map((col) => `<td>${fmt(col, row[col])}</td>`).join("")}
+              <td>${index + 1}</td>
+              ${dataCols.map((col) => `<td>${fmt(col, row[col])}</td>`).join("")}
               ${key ? `<td class="actions"><button class="btn-secondary" data-edit="${encodeURIComponent(JSON.stringify(row))}">${module?.actionLabel || "Edit"}</button>${module?.allowDelete === false ? "" : `<button class="btn-danger" data-del="${row.id}">Hapus</button>`}</td>` : ""}
             </tr>`).join("") : `<tr><td colspan="${emptyColspan}" class="empty">Belum ada data.</td></tr>`}
         </tbody>
@@ -590,6 +643,7 @@ function field(key, name, value = "") {
   if (name === "gender") return select(name, value, ["L", "P", "-"]);
   if (name === "role") return select(name, value || "operator", ["admin", "operator", "akademik", "keuangan", "pengasuh", "portal_admin"]);
   if (name === "type" && key === "cash") return select(name, value, ["masuk", "keluar", "Masuk", "Keluar"]);
+  if (name === "category" && key === "cash") return select(name, value, ["SPP", "Infaq", "Donasi", "Wakaf", "Operasional", "Konsumsi", "Listrik", "Air", "Perawatan", "Kegiatan", "ATK", "Transportasi", "Lainnya"]);
   if (name === "type" && key === "contents") return select(name, value, ["article", "announcement"]);
   if (name === "content_type" && key === "activities") return select(name, value, ["activity", "article", "announcement"]);
   if (name === "semester") return select(name, value, ["Ganjil", "Genap"]);
@@ -634,6 +688,137 @@ function metricCard(label, value) {
   return `<div class="card metric-card"><div class="muted">${label}</div><div class="metric">${value}</div></div>`;
 }
 
+function summaryActionCard(label, value, actionLabel) {
+  return `
+    <div class="card metric-card">
+      <div class="card-head compact-head">
+        <div class="muted">${label}</div>
+        <button class="btn-secondary" id="refreshDashboardBtn">${actionLabel}</button>
+      </div>
+      <div class="metric">${value}</div>
+    </div>`;
+}
+
+function pieCard(title, data) {
+  const male = Number(data?.male || 0);
+  const female = Number(data?.female || 0);
+  const other = Number(data?.other || 0);
+  const total = male + female + other;
+  const maleDeg = total ? (male / total) * 360 : 0;
+  const femaleDeg = total ? ((male + female) / total) * 360 : maleDeg;
+  const chartStyle = `background: conic-gradient(var(--green) 0deg ${maleDeg}deg, #d6b97b ${maleDeg}deg ${femaleDeg}deg, #d1d5db ${femaleDeg}deg 360deg);`;
+  return `
+    <div class="card pie-card pie-card-compact">
+      <div>
+        <h3>${title}</h3>
+        <p class="muted">Sebaran berdasarkan jenis kelamin.</p>
+      </div>
+      <div class="pie-wrap">
+        <div class="pie-chart" style="${chartStyle}"><span>${total}</span></div>
+        <div class="pie-legend">
+          <div><i class="swatch male"></i><span>Laki-laki</span><b>${male}</b></div>
+          <div><i class="swatch female"></i><span>Perempuan</span><b>${female}</b></div>
+          ${other ? `<div><i class="swatch other"></i><span>Lainnya</span><b>${other}</b></div>` : ""}
+        </div>
+      </div>
+    </div>`;
+}
+
+function horizontalBarCard(title, description, items, valueKey, formatter = (value) => value) {
+  const rows = Array.isArray(items) ? items : [];
+  const max = Math.max(1, ...rows.map((item) => Number(item?.[valueKey] || 0)));
+  return `
+    <div class="card analytic-card pie-card-compact">
+      <div>
+        <h3>${title}</h3>
+        <p class="muted">${description}</p>
+      </div>
+      ${rows.length ? `
+        <div class="hbar-list">
+          ${rows.map((item) => {
+            const value = Number(item?.[valueKey] || 0);
+            const width = Math.max(10, Math.round((value / max) * 100));
+            return `
+              <div class="hbar-row">
+                <div class="hbar-meta">
+                  <span>${esc(item.label || "-")}</span>
+                  <b>${formatter(value)}</b>
+                </div>
+                <div class="hbar-track"><i class="hbar-fill" style="width:${width}%"></i></div>
+              </div>`;
+          }).join("")}
+        </div>` : `<div class="empty-state">Belum ada data untuk divisualkan.</div>`}
+    </div>`;
+}
+
+function statusDonutCard(title, description, items, valueKey, palette = {}) {
+  const rows = Array.isArray(items) ? items.filter((item) => Number(item?.[valueKey] || 0) > 0) : [];
+  const total = rows.reduce((sum, item) => sum + Number(item?.[valueKey] || 0), 0);
+  const colors = rows.map((item, index) => palette[item.label] || ["var(--green)", "var(--gold)", "#60a5fa", "#dc2626", "#9ca3af"][index % 5]);
+  let cursor = 0;
+  const segments = rows.map((item, index) => {
+    const value = Number(item?.[valueKey] || 0);
+    const end = total ? cursor + (value / total) * 360 : cursor;
+    const segment = `${colors[index]} ${cursor}deg ${end}deg`;
+    cursor = end;
+    return segment;
+  });
+  const chartStyle = rows.length
+    ? `background: conic-gradient(${segments.join(", ")});`
+    : "background: conic-gradient(#e5e7eb 0deg 360deg);";
+  return `
+    <div class="card analytic-card pie-card-compact">
+      <div>
+        <h3>${title}</h3>
+        <p class="muted">${description}</p>
+      </div>
+      <div class="pie-wrap">
+        <div class="pie-chart" style="${chartStyle}"><span>${total || 0}</span></div>
+        <div class="pie-legend">
+          ${rows.length ? rows.map((item, index) => `
+            <div>
+              <i class="swatch" style="background:${colors[index]}"></i>
+              <span>${esc(item.label || "-")}</span>
+              <b>${Number(item?.[valueKey] || 0)}</b>
+            </div>`).join("") : `<div><span class="muted">Belum ada data untuk divisualkan.</span></div>`}
+        </div>
+      </div>
+    </div>`;
+}
+
+function cashFlowCard(title, description, items) {
+  const rows = Array.isArray(items) ? items : [];
+  const max = Math.max(1, ...rows.flatMap((item) => [Number(item?.incoming || 0), Number(item?.outgoing || 0)]));
+  return `
+    <div class="card analytic-card">
+      <div>
+        <h3>${title}</h3>
+        <p class="muted">${description}</p>
+      </div>
+      ${rows.length ? `
+        <div class="dual-chart">
+          ${rows.map((item) => {
+            const incoming = Number(item?.incoming || 0);
+            const outgoing = Number(item?.outgoing || 0);
+            const inHeight = Math.max(8, Math.round((incoming / max) * 100));
+            const outHeight = Math.max(8, Math.round((outgoing / max) * 100));
+            return `
+              <div class="dual-group">
+                <div class="dual-bars">
+                <div class="dual-bar incoming" style="height:${inHeight}%"><b>${shortRupiah(incoming)}</b></div>
+                <div class="dual-bar outgoing" style="height:${outHeight}%"><b>${shortRupiah(outgoing)}</b></div>
+              </div>
+                <span>${esc(formatLongDate(item.label))}</span>
+              </div>`;
+          }).join("")}
+        </div>
+        <div class="mini-legend">
+          <div><i class="swatch" style="background:var(--green)"></i><span>Kas masuk</span></div>
+          <div><i class="swatch" style="background:#dc2626"></i><span>Kas keluar</span></div>
+        </div>` : `<div class="empty-state">Belum ada data untuk divisualkan.</div>`}
+    </div>`;
+}
+
 function filterRows(rows, query) {
   if (!query) return rows;
   const needle = query.toLowerCase();
@@ -660,10 +845,96 @@ function compareValues(left, right, direction = "asc") {
   return direction === "desc" ? result * -1 : result;
 }
 
+function shortRupiah(value) {
+  const amount = Number(value || 0);
+  if (amount >= 1000000) return `${(amount / 1000000).toFixed(amount % 1000000 === 0 ? 0 : 1)} jt`;
+  if (amount >= 1000) return `${Math.round(amount / 1000)} rb`;
+  return `${amount}`;
+}
+
+function formatLongDate(value) {
+  if (!value) return "-";
+  const normalized = value instanceof Date ? value : normalizeDateInput(value);
+  const date = new Date(normalized);
+  if (Number.isNaN(date.getTime())) return String(value);
+  return date.toLocaleDateString("id-ID", { day: "2-digit", month: "long", year: "numeric" });
+}
+
+function normalizeDateInput(value) {
+  const text = String(value ?? "").trim();
+  if (!text) return text;
+  if (/^\d{4}-\d{2}-\d{2}$/.test(text)) return `${text}T00:00:00`;
+  if (/^\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}(:\d{2})?$/.test(text)) return text.replace(" ", "T");
+  return text;
+}
+
+function summarizeGender(rows) {
+  return rows.reduce((acc, row) => {
+    const gender = String(row?.gender || "").toUpperCase();
+    if (gender === "L") acc.male += 1;
+    else if (gender === "P") acc.female += 1;
+    else acc.other += 1;
+    return acc;
+  }, { male: 0, female: 0, other: 0 });
+}
+
+function groupCount(rows, field) {
+  const map = new Map();
+  rows.forEach((row) => {
+    const label = String(row?.[field] || "-");
+    map.set(label, (map.get(label) || 0) + 1);
+  });
+  return Array.from(map.entries())
+    .map(([label, total]) => ({ label, total }))
+    .sort((a, b) => b.total - a.total || a.label.localeCompare(b.label));
+}
+
+function groupByLabel(rows) {
+  const map = new Map();
+  rows.forEach((row) => {
+    const label = String(row?.label || "-");
+    map.set(label, (map.get(label) || 0) + Number(row?.total || 0));
+  });
+  return Array.from(map.entries())
+    .map(([label, total]) => ({ label, total }))
+    .sort((a, b) => b.total - a.total || a.label.localeCompare(b.label));
+}
+
+function paymentStatusLabel(status) {
+  const value = String(status || "").toLowerCase();
+  if (value === "lunas") return "Lunas";
+  if (value === "cicil") return "Cicil";
+  return "Belum";
+}
+
+function attendanceStatusLabel(status) {
+  const value = String(status || "").toLowerCase();
+  if (value === "hadir") return "Hadir";
+  if (value === "izin") return "Izin";
+  if (value === "sakit") return "Sakit";
+  return "Alpha";
+}
+
+function groupAverageByClass(tahfidzRows, studentRows) {
+  const studentClass = new Map(studentRows.map((row) => [row.name, row.class_name || "-"]));
+  const totals = new Map();
+  tahfidzRows.forEach((row) => {
+    const label = studentClass.get(row.student_name) || "-";
+    const bucket = totals.get(label) || { label, score: 0, count: 0 };
+    bucket.score += Number(row.score || 0);
+    bucket.count += 1;
+    totals.set(label, bucket);
+  });
+  return Array.from(totals.values())
+    .map((item) => ({ label: item.label, score: Math.round(item.score / Math.max(1, item.count)) }))
+    .sort((a, b) => b.score - a.score || a.label.localeCompare(b.label));
+}
+
 function exportCsv(key, cols, rows) {
+  const csvCols = cols.filter((col) => col !== "id");
   const csv = [
-    cols.map((col) => labels[col] || col).join(","),
-    ...rows.map((row) => cols.map((col) => `"${String(row[col] ?? "").replace(/"/g, '""')}"`).join(","))
+    ["No.", ...csvCols.map((col) => labels[col] || col)].join(","),
+    ...rows.map((row, index) => [`"${index + 1}"`, ...csvCols.map((col) => `"${String(row[col] ?? "").replace(/"/g, '""')}"`)].join(","))
   ].join("\n");
   const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
   const url = URL.createObjectURL(blob);
@@ -676,6 +947,7 @@ function exportCsv(key, cols, rows) {
 
 function fmt(col, value) {
   if (["amount", "paid_amount", "total_donation", "last_donation"].includes(col)) return rupiah(value);
+  if (["birth_date", "attendance_date", "review_date", "trx_date", "due_date", "activity_date", "letter_date", "created_at", "handled_at"].includes(col)) return esc(formatLongDate(value));
   if (col === "is_published") return Number(value) ? '<span class="badge">Publik</span>' : '<span class="badge gray">Draft</span>';
   if (col === "is_active") return Number(value) ? '<span class="badge">Aktif</span>' : '<span class="badge gray">Nonaktif</span>';
   if (col === "follow_up_status") return `<span class="badge ${String(value).includes("baru") ? "gold" : ""}">${esc(value ?? "-")}</span>`;
