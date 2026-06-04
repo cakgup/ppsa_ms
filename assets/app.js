@@ -342,9 +342,9 @@ function renderNav() {
   const nav = document.getElementById("nav");
   nav.innerHTML = groups.map(([group, items]) => `
     <h4>${group}</h4>
-    ${items.map(([key, label, status]) => `
+    ${items.map(([key, label]) => `
       <button class="${state.page === key ? "active" : ""}" data-page="${key}">
-        <span>${label}</span><small>${status}</small>
+        <span>${label}</span>
       </button>`).join("")}
   `).join("");
 
