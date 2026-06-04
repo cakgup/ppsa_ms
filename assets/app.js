@@ -557,8 +557,9 @@ function table(cols, rows, key) {
     </div>`;
 }
 
-function openForm(key, row = {}) {
+async function openForm(key, row = {}) {
   const module = meta[key];
+  const refs = await loadFormRefs();
   const modal = document.getElementById("modal");
   modal.classList.remove("hidden");
   const followUpMode = Array.isArray(module.readOnlyFields) && Array.isArray(module.editFields);
@@ -572,7 +573,7 @@ function openForm(key, row = {}) {
         <button id="closeModal" type="button" class="btn-secondary">Tutup</button>
       </div>
       <form id="form" class="form-grid">
-        ${renderFormFields(key, module, row)}
+        ${renderFormFields(key, module, row, refs)}
         <div class="full actions">
           <button class="btn-primary">Simpan</button>
           <button type="button" id="cancel" class="btn-secondary">Batal</button>
@@ -597,7 +598,20 @@ function openForm(key, row = {}) {
   };
 }
 
-function renderFormFields(key, module, row) {
+async function loadFormRefs() {
+  const [teachersResponse] = await Promise.all([
+    callApi("/api/teachers").catch(() => ({ data: [] }))
+  ]);
+  return {
+    teachers: (teachersResponse.data || [])
+      .filter((item) => String(item.status || "").toLowerCase() !== "nonaktif")
+      .map((item) => item.name)
+      .filter(Boolean)
+      .sort((left, right) => String(left).localeCompare(String(right), "id"))
+  };
+}
+
+function renderFormFields(key, module, row, refs = {}) {
   if (module.readOnlyFields && module.editFields) {
     return `
       <div class="full form-section">
@@ -609,7 +623,7 @@ function renderFormFields(key, module, row) {
       <div class="full form-section">
         <h3>Tindak Lanjut Admin</h3>
         <div class="form-grid">
-          ${module.editFields.map((fieldName) => field(key, fieldName, row[fieldName])).join("")}
+          ${module.editFields.map((fieldName) => field(key, fieldName, row[fieldName], refs)).join("")}
         </div>
       </div>`;
   }
@@ -619,13 +633,13 @@ function renderFormFields(key, module, row) {
       <div class="full form-section">
         <h3>${section.title}</h3>
         <div class="form-grid">
-          ${section.fields.map((fieldName) => field(key, fieldName, row[fieldName])).join("")}
+          ${section.fields.map((fieldName) => field(key, fieldName, row[fieldName], refs)).join("")}
         </div>
       </div>
     `).join("");
   }
 
-  return module.fields.map((fieldName) => field(key, fieldName, row[fieldName])).join("");
+  return module.fields.map((fieldName) => field(key, fieldName, row[fieldName], refs)).join("");
 }
 
 function readonlyField(name, value) {
@@ -636,11 +650,12 @@ function readonlyField(name, value) {
     </div>`;
 }
 
-function field(key, name, value = "") {
+function field(key, name, value = "", refs = {}) {
   if (["description", "body", "address", "notes", "summary", "focus_points", "required_points", "extra_points", "requirements_points", "profile_body_1", "profile_body_2", "hero_lead", "summary_lead", "program_section_lead", "registration_lead", "pricing_note", "schedule_lead", "donation_lead", "doa_lead", "activity"].includes(name)) {
     return `<div class="full"><label>${labels[name] || name}</label><textarea name="${name}">${esc(value)}</textarea></div>`;
   }
   if (name === "gender") return select(name, value, ["L", "P", "-"]);
+  if (["teacher_name", "homeroom_teacher"].includes(name)) return select(name, value, buildDynamicOptions(refs.teachers || [], value, "Pilih pengajar"));
   if (name === "role") return select(name, value || "operator", ["admin", "operator", "akademik", "keuangan", "pengasuh", "portal_admin"]);
   if (name === "type" && key === "cash") return select(name, value, [{ value: "masuk", label: "Masuk" }, { value: "keluar", label: "Keluar" }]);
   if (name === "category" && key === "cash") return select(name, value, ["SPP", "Infaq", "Donasi", "Wakaf", "Operasional", "Konsumsi", "Listrik", "Air", "Perawatan", "Kegiatan", "ATK", "Transportasi", "Lainnya"]);
@@ -673,6 +688,14 @@ function select(name, value, options) {
         }).join("")}
       </select>
     </div>`;
+}
+
+function buildDynamicOptions(items, currentValue, placeholder) {
+  const normalized = [...new Set(items.map((item) => String(item).trim()).filter(Boolean))];
+  if (currentValue && !normalized.includes(String(currentValue))) normalized.unshift(String(currentValue));
+  const options = normalized.map((item) => ({ value: item, label: item }));
+  if (placeholder) options.unshift({ value: "", label: placeholder });
+  return options;
 }
 
 async function deleteRow(key, id) {
