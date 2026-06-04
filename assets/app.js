@@ -94,7 +94,7 @@ const seedDemo = {
   library: [{ id: 1, book_code: "BK-001", title: "Adab Penuntut Ilmu", author: "Tim PPSA", stock: 10, available: 8 }],
   dormitories: [{ id: 1, room_name: "Kamar Umar", building: "Asrama Putra", capacity: 12, occupied: 10, supervisor: "Ust. Hasan" }],
   inventory: [{ id: 1, asset_code: "INV-001", name: "Proyektor Aula", category: "Elektronik", location: "Aula", condition_status: "baik" }],
-  users: [{ id: 1, name: "Administrator PPSA", email: "admin@ppsa.local", role: "admin", status: "aktif" }],
+  users: [{ id: 1, name: "Administrator PPSA", email: "", role: "admin", status: "aktif" }],
   audit: [{ id: 1, created_at: "2026-06-02 08:00", user_name: "Administrator PPSA", action: "LOGIN", module: "Auth", description: "Login demo" }]
 };
 
