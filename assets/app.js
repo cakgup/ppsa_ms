@@ -12,8 +12,11 @@ const state = {
 };
 
 const groups = [
-  ["Administrasi Web Portal", [["portal_settings", "Pengaturan Portal", "Ready"], ["programs", "Program Portal", "Ready"], ["portal_schedule", "Jadwal Portal", "Ready"], ["donation_programs", "Program Donasi", "Ready"], ["activities", "Kegiatan & Publikasi", "Ready"], ["admissions", "Leads Pendaftaran", "Ready"], ["contact_messages", "Pesan Masuk", "Ready"], ["donation_confirmations", "Konfirmasi Donasi", "Ready"]]],
-  ["Administrasi Operasional Pondok", [["dashboard", "Dashboard", "Ready"], ["branches", "Cabang/Unit", "Ready"], ["students", "Santri", "Ready"], ["guardians", "Wali Santri", "Ready"], ["teachers", "Pengajar/Ustadz", "Ready"], ["classes", "Kelas", "Ready"], ["subjects", "Mata Pelajaran", "Ready"], ["grades", "Nilai/Rapor", "Ready"], ["schedules", "Jadwal Pelajaran", "Ready"], ["attendance", "Absensi QR", "Ready"], ["tahfidz", "Tahfidz Monitoring", "Ready"], ["cash", "Buku Kas", "Ready"], ["payments", "SPP/Iuran", "Ready"], ["donors", "Donatur/Infaq", "Ready"], ["letters", "Surat Menyurat", "Ready"], ["library", "Perpustakaan", "Ready"], ["dormitories", "Asrama/Kamar", "Ready"], ["inventory", "Inventaris", "Ready"]]],
+  ["Utama", [["dashboard", "Dashboard", "Ready"], ["branches", "Cabang/Unit", "Ready"]]],
+  ["Administrasi Web Portal", [["portal_settings", "Pengaturan Portal", "Ready"], ["programs", "Program Portal", "Ready"], ["portal_schedule", "Jadwal Santri", "Ready"], ["donation_programs", "Program Donasi", "Ready"], ["activities", "Kegiatan & Publikasi", "Ready"], ["admissions", "Leads Pendaftaran", "Ready"], ["contact_messages", "Pesan Masuk", "Ready"], ["donation_confirmations", "Konfirmasi Donasi", "Ready"]]],
+  ["Akademik & Santri", [["students", "Santri", "Ready"], ["guardians", "Wali Santri", "Ready"], ["teachers", "Pengajar/Ustadz", "Ready"], ["classes", "Kelas", "Ready"], ["subjects", "Mata Pelajaran", "Ready"], ["grades", "Nilai/Rapor", "Ready"], ["schedules", "Jadwal Pelajaran", "Ready"], ["attendance", "Absensi QR", "Ready"], ["tahfidz", "Tahfidz Monitoring", "Ready"]]],
+  ["Keuangan Pondok", [["cash", "Buku Kas", "Ready"], ["payments", "SPP/Iuran", "Ready"], ["donors", "Donatur/Infaq", "Ready"]]],
+  ["Administrasi & Sarana", [["letters", "Surat Menyurat", "Ready"], ["library", "Perpustakaan", "Ready"], ["dormitories", "Asrama/Kamar", "Ready"], ["inventory", "Inventaris", "Ready"]]],
   ["Sistem", [["users", "User & Role", "Ready"]]]
 ];
 
