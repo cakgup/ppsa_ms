@@ -661,11 +661,12 @@ function field(key, name, value = "", refs = {}) {
     return `<div class="full"><label>${labels[name] || name}</label><textarea name="${name}">${esc(value)}</textarea></div>`;
   }
   if (name === "gender") return select(name, value, ["L", "P", "-"]);
-  if (name === "student_name") return select(name, value, buildDynamicOptions(refs.students || [], value, "Pilih santri"));
-  if (["teacher_name", "homeroom_teacher"].includes(name)) return select(name, value, buildDynamicOptions(refs.teachers || [], value, "Pilih pengajar"));
+  if (name === "student_name") return datalistField(name, value, buildDynamicOptions(refs.students || [], value), "Ketik atau pilih santri");
+  if (["teacher_name", "homeroom_teacher"].includes(name)) return datalistField(name, value, buildDynamicOptions(refs.teachers || [], value), "Ketik atau pilih pengajar");
   if (name === "role") return select(name, value || "operator", ["admin", "operator", "akademik", "keuangan", "pengasuh", "portal_admin"]);
   if (name === "type" && key === "cash") return select(name, value, [{ value: "masuk", label: "Masuk" }, { value: "keluar", label: "Keluar" }]);
   if (name === "category" && key === "cash") return select(name, value, ["SPP", "Infaq", "Donasi", "Wakaf", "Operasional", "Konsumsi", "Listrik", "Air", "Perawatan", "Kegiatan", "ATK", "Transportasi", "Lainnya"]);
+  if (name === "method" && key === "attendance") return select(name, value, [{ value: "QR", label: "QR" }, { value: "Manual", label: "Manual" }]);
   if (name === "donor_type" && key === "donors") return select(name, value, ["Tetap", "Insidental", "Infaq", "Donatur", "Wakaf", "Alumni", "Wali Santri", "Lembaga", "Komunitas", "Lainnya"]);
   if (name === "type" && key === "contents") return select(name, value, ["article", "announcement"]);
   if (name === "content_type" && key === "activities") return select(name, value, ["activity", "article", "announcement"]);
@@ -697,11 +698,25 @@ function select(name, value, options) {
     </div>`;
 }
 
+function datalistField(name, value, options, placeholder = "") {
+  const listId = `list-${name}`;
+  return `
+    <div>
+      <label>${labels[name] || name}</label>
+      <input name="${name}" value="${esc(value)}" list="${listId}" placeholder="${esc(placeholder)}" autocomplete="off">
+      <datalist id="${listId}">
+        ${options.map((option) => {
+          const optionValue = typeof option === "object" ? option.value : option;
+          return `<option value="${esc(optionValue)}"></option>`;
+        }).join("")}
+      </datalist>
+    </div>`;
+}
+
 function buildDynamicOptions(items, currentValue, placeholder) {
   const normalized = [...new Set(items.map((item) => String(item).trim()).filter(Boolean))];
   if (currentValue && !normalized.includes(String(currentValue))) normalized.unshift(String(currentValue));
   const options = normalized.map((item) => ({ value: item, label: item }));
-  if (placeholder) options.unshift({ value: "", label: placeholder });
   return options;
 }
 
