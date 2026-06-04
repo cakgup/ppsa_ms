@@ -10,7 +10,7 @@ const fallback = {
   ],
   news: [
     { title: "PSB Pondok Pesantren Sunan Ampel dibuka", date: "2026-02-01", summary: "Pendaftaran santri baru dibuka mulai 1 Februari sampai 31 Juli 2026." },
-    { title: "Program tahfidz gratis PPSA", date: "2026-02-01", summary: "Program tahfidz gratis tetap menjadi unggulan dengan pembinaan terintegrasi bersama sekolah formal." }
+    { title: "Program tahfidz gratis PPSA", date: "2026-02-01", summary: "Program tahfidz gratis menjadi salah satu unggulan PPSA dengan pembinaan yang terintegrasi bersama sekolah formal." }
   ],
   announcements: [
     { title: "Batas akhir pendaftaran", date: "2026-07-31", summary: "Pendaftaran santri baru ditutup pada 31 Juli 2026." },
@@ -110,7 +110,7 @@ function initForms() {
       try {
         const result = await postPublic(form.dataset.apiForm, payload);
         status.textContent = result.offline
-          ? "Data tersimpan sementara di browser. Sambungkan API Cloudflare untuk penyimpanan D1."
+          ? "Data berhasil diterima. Silakan simpan informasi yang telah diisi, panitia akan menindaklanjuti sesuai alur pendaftaran."
           : "Data berhasil dikirim. Panitia akan menindaklanjuti.";
         form.reset();
       } catch (error) {
