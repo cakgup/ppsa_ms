@@ -42,14 +42,30 @@ const meta = {
   programs: { title: "Program Portal", subtitle: "Program unggulan yang tampil di portal publik", cols: ["id", "title", "sort_order", "is_published"], fields: ["title", "description", "sort_order", "is_published"] },
   donation_programs: { title: "Program Donasi", subtitle: "Daftar program donasi, infaq, dan wakaf di portal", cols: ["id", "title", "target_amount", "is_active"], fields: ["title", "summary", "target_amount", "is_active"] },
   portal_schedule: { title: "Jadwal Portal", subtitle: "Ritme harian santri yang tampil di portal publik", cols: ["id", "sort_order", "time_slot", "activity"], fields: ["time_slot", "activity", "sort_order"] },
-  portal_settings: { title: "Pengaturan Portal", subtitle: "Konten utama portal publik PPSA", cols: ["id", "site_name", "hero_title", "registration_title", "contact_title"], fields: ["site_name", "site_tagline", "hero_eyebrow", "hero_title", "hero_lead", "hero_primary_label", "hero_primary_href", "hero_secondary_label", "hero_secondary_href", "summary_title", "summary_lead", "profile_title", "profile_body_1", "profile_body_2", "focus_title", "focus_points", "program_section_title", "program_section_lead", "required_title", "required_points", "extra_title", "extra_points", "registration_title", "registration_lead", "psb_card_title", "psb_registration_text", "psb_entry_text", "requirements_title", "requirements_points", "pricing_title", "pricing_putra", "pricing_putri", "pricing_spp", "pricing_note", "schedule_title", "schedule_lead", "donation_title", "donation_lead", "doa_title", "doa_lead", "doa_url", "contact_title", "contact_address", "instagram_label", "instagram_url", "youtube_label", "youtube_url", "whatsapp_1_label", "whatsapp_1_number", "whatsapp_2_label", "whatsapp_2_number"], singleton: true },
+  portal_settings: {
+    title: "Pengaturan Portal",
+    subtitle: "Konten utama portal publik PPSA",
+    cols: ["id", "site_name", "hero_title", "registration_title", "contact_title"],
+    fields: ["site_name", "site_tagline", "hero_eyebrow", "hero_title", "hero_lead", "hero_primary_label", "hero_primary_href", "hero_secondary_label", "hero_secondary_href", "summary_title", "summary_lead", "profile_title", "profile_body_1", "profile_body_2", "focus_title", "focus_points", "program_section_title", "program_section_lead", "required_title", "required_points", "extra_title", "extra_points", "registration_title", "registration_lead", "psb_card_title", "psb_registration_text", "psb_entry_text", "requirements_title", "requirements_points", "pricing_title", "pricing_putra", "pricing_putri", "pricing_spp", "pricing_note", "schedule_title", "schedule_lead", "donation_title", "donation_lead", "doa_title", "doa_lead", "doa_url", "contact_title", "contact_address", "instagram_label", "instagram_url", "youtube_label", "youtube_url", "whatsapp_1_label", "whatsapp_1_number", "whatsapp_2_label", "whatsapp_2_number"],
+    singleton: true,
+    allowDelete: false,
+    sections: [
+      { title: "Identitas Portal", fields: ["site_name", "site_tagline"] },
+      { title: "Hero Utama", fields: ["hero_eyebrow", "hero_title", "hero_lead", "hero_primary_label", "hero_primary_href", "hero_secondary_label", "hero_secondary_href"] },
+      { title: "Ringkasan dan Profil", fields: ["summary_title", "summary_lead", "profile_title", "profile_body_1", "profile_body_2", "focus_title", "focus_points"] },
+      { title: "Program Pendidikan", fields: ["program_section_title", "program_section_lead", "required_title", "required_points", "extra_title", "extra_points"] },
+      { title: "Pendaftaran Santri Baru", fields: ["registration_title", "registration_lead", "psb_card_title", "psb_registration_text", "psb_entry_text", "requirements_title", "requirements_points", "pricing_title", "pricing_putra", "pricing_putri", "pricing_spp", "pricing_note"] },
+      { title: "Jadwal, Donasi, dan Doa", fields: ["schedule_title", "schedule_lead", "donation_title", "donation_lead", "doa_title", "doa_lead", "doa_url"] },
+      { title: "Kontak dan Media Sosial", fields: ["contact_title", "contact_address", "instagram_label", "instagram_url", "youtube_label", "youtube_url", "whatsapp_1_label", "whatsapp_1_number", "whatsapp_2_label", "whatsapp_2_number"] }
+    ]
+  },
   letters: { title: "Surat Menyurat", subtitle: "Surat masuk, surat keluar, dan arsip digital", cols: ["id", "letter_no", "letter_date", "type", "subject", "status"], fields: ["letter_no", "letter_date", "type", "sender_receiver", "subject", "summary", "status"] },
   library: { title: "Perpustakaan", subtitle: "Buku, peminjaman, dan pengembalian", cols: ["id", "book_code", "title", "author", "stock", "available"], fields: ["book_code", "title", "author", "category", "stock", "available", "location"] },
   dormitories: { title: "Asrama/Kamar", subtitle: "Penempatan santri dan kapasitas kamar", cols: ["id", "room_name", "building", "capacity", "occupied", "supervisor"], fields: ["room_name", "building", "capacity", "occupied", "supervisor", "notes"] },
   inventory: { title: "Inventaris", subtitle: "Aset barang, kondisi, dan lokasi", cols: ["id", "asset_code", "name", "category", "location", "condition_status"], fields: ["asset_code", "name", "category", "location", "condition_status", "purchase_year", "notes"] },
-  admissions: { title: "Leads Pendaftaran", subtitle: "Form minat santri baru dari portal publik", cols: ["id", "created_at", "student_name", "guardian_name", "phone", "program", "follow_up_status"], fields: ["student_name", "gender", "birth_date", "guardian_name", "phone", "program", "address", "notes", "follow_up_status", "follow_up_notes", "handled_by", "handled_at"] },
-  contact_messages: { title: "Pesan Masuk", subtitle: "Pesan publik dari halaman kontak portal", cols: ["id", "created_at", "name", "contact", "subject", "follow_up_status"], fields: ["name", "contact", "subject", "message", "follow_up_status", "follow_up_notes", "handled_by", "handled_at"] },
-  donation_confirmations: { title: "Konfirmasi Donasi", subtitle: "Konfirmasi transfer dan donasi dari portal publik", cols: ["id", "created_at", "donor_name", "phone", "amount", "follow_up_status"], fields: ["donor_name", "phone", "amount", "method", "notes", "follow_up_status", "follow_up_notes", "handled_by", "handled_at"] },
+  admissions: { title: "Leads Pendaftaran", subtitle: "Form minat santri baru dari portal publik", cols: ["id", "created_at", "student_name", "guardian_name", "phone", "program", "follow_up_status"], fields: ["student_name", "gender", "birth_date", "guardian_name", "phone", "program", "address", "notes", "follow_up_status", "follow_up_notes", "handled_by", "handled_at"], readOnlyFields: ["student_name", "gender", "birth_date", "guardian_name", "phone", "program", "address", "notes", "created_at"], editFields: ["follow_up_status", "follow_up_notes", "handled_by", "handled_at"], allowCreate: false, allowDelete: false, actionLabel: "Tindak Lanjut" },
+  contact_messages: { title: "Pesan Masuk", subtitle: "Pesan publik dari halaman kontak portal", cols: ["id", "created_at", "name", "contact", "subject", "follow_up_status"], fields: ["name", "contact", "subject", "message", "follow_up_status", "follow_up_notes", "handled_by", "handled_at"], readOnlyFields: ["name", "contact", "subject", "message", "created_at"], editFields: ["follow_up_status", "follow_up_notes", "handled_by", "handled_at"], allowCreate: false, allowDelete: false, actionLabel: "Tindak Lanjut" },
+  donation_confirmations: { title: "Konfirmasi Donasi", subtitle: "Konfirmasi transfer dan donasi dari portal publik", cols: ["id", "created_at", "donor_name", "phone", "amount", "follow_up_status"], fields: ["donor_name", "phone", "amount", "method", "notes", "follow_up_status", "follow_up_notes", "handled_by", "handled_at"], readOnlyFields: ["donor_name", "phone", "amount", "method", "notes", "created_at"], editFields: ["follow_up_status", "follow_up_notes", "handled_by", "handled_at"], allowCreate: false, allowDelete: false, actionLabel: "Tindak Lanjut" },
   users: { title: "User & Role", subtitle: "Akun pengguna dan hak akses sistem", cols: ["id", "name", "email", "role", "status"], fields: ["name", "email", "role", "status"] },
   audit: { title: "Audit Log", subtitle: "Jejak aktivitas pengguna", cols: ["id", "created_at", "user_name", "action", "module", "description"], fields: ["created_at", "user_name", "action", "module", "description"] }
 };
@@ -400,6 +416,7 @@ async function renderCrud(key) {
   const response = await callApi(`/api/${key}`);
   const query = state.filters[key] || "";
   const rows = filterRows(response.data, query);
+  const canCreate = module.allowCreate !== false;
 
   document.getElementById("content").innerHTML = `
     <div class="toolbar">
@@ -410,12 +427,13 @@ async function renderCrud(key) {
       <div class="toolbar-actions">
         <input id="searchInput" class="search-input" value="${esc(query)}" placeholder="Cari data..." />
         <button id="exportBtn" class="btn-secondary">Export CSV</button>
-        <button id="addBtn" class="btn-primary">${module.singleton ? (rows.length ? "Edit Pengaturan" : "Buat Pengaturan") : "Tambah Data"}</button>
+        ${canCreate ? `<button id="addBtn" class="btn-primary">${module.singleton ? (rows.length ? "Edit Pengaturan" : "Buat Pengaturan") : "Tambah Data"}</button>` : ""}
       </div>
     </div>
     <div class="card">${table(module.cols, rows, key)}</div>`;
 
-  document.getElementById("addBtn").onclick = () => openForm(key, module.singleton ? (rows[0] || {}) : {});
+  const addBtn = document.getElementById("addBtn");
+  if (addBtn) addBtn.onclick = () => openForm(key, module.singleton ? (rows[0] || {}) : {});
   document.getElementById("exportBtn").onclick = () => exportCsv(key, module.cols, rows);
   document.getElementById("searchInput").oninput = debounce((event) => {
     state.filters[key] = event.target.value.trim();
@@ -459,6 +477,7 @@ function renderComing(key) {
 }
 
 function table(cols, rows, key) {
+  const module = key ? meta[key] : null;
   const emptyColspan = cols.length + (key ? 1 : 0);
   return `
     <div class="table-wrap">
@@ -470,7 +489,7 @@ function table(cols, rows, key) {
           ${rows.length ? rows.map((row) => `
             <tr>
               ${cols.map((col) => `<td>${fmt(col, row[col])}</td>`).join("")}
-              ${key ? `<td class="actions"><button class="btn-secondary" data-edit="${encodeURIComponent(JSON.stringify(row))}">Edit</button><button class="btn-danger" data-del="${row.id}">Hapus</button></td>` : ""}
+              ${key ? `<td class="actions"><button class="btn-secondary" data-edit="${encodeURIComponent(JSON.stringify(row))}">${module?.actionLabel || "Edit"}</button>${module?.allowDelete === false ? "" : `<button class="btn-danger" data-del="${row.id}">Hapus</button>`}</td>` : ""}
             </tr>`).join("") : `<tr><td colspan="${emptyColspan}" class="empty">Belum ada data.</td></tr>`}
         </tbody>
       </table>
@@ -481,17 +500,18 @@ function openForm(key, row = {}) {
   const module = meta[key];
   const modal = document.getElementById("modal");
   modal.classList.remove("hidden");
+  const followUpMode = Array.isArray(module.readOnlyFields) && Array.isArray(module.editFields);
   modal.innerHTML = `
     <div class="modal-card">
       <div class="card-head">
         <div>
-          <h2>${row.id ? "Edit" : "Tambah"} ${module.title}</h2>
-          <p class="muted">Lengkapi data sesuai kebutuhan administrasi.</p>
+          <h2>${row.id ? (followUpMode ? "Tindak Lanjut" : "Edit") : "Tambah"} ${module.title}</h2>
+          <p class="muted">${followUpMode ? "Data asli pengunjung ditampilkan sebagai referensi, lalu admin hanya mengisi bagian tindak lanjut." : "Lengkapi data sesuai kebutuhan administrasi."}</p>
         </div>
         <button id="closeModal" type="button" class="btn-secondary">Tutup</button>
       </div>
       <form id="form" class="form-grid">
-        ${module.fields.map((fieldName) => field(key, fieldName, row[fieldName])).join("")}
+        ${renderFormFields(key, module, row)}
         <div class="full actions">
           <button class="btn-primary">Simpan</button>
           <button type="button" id="cancel" class="btn-secondary">Batal</button>
@@ -513,6 +533,45 @@ function openForm(key, row = {}) {
     closeModal();
     renderCrud(key);
   };
+}
+
+function renderFormFields(key, module, row) {
+  if (module.readOnlyFields && module.editFields) {
+    return `
+      <div class="full form-section">
+        <h3>Data Masuk</h3>
+        <div class="detail-grid">
+          ${module.readOnlyFields.map((fieldName) => readonlyField(fieldName, row[fieldName])).join("")}
+        </div>
+      </div>
+      <div class="full form-section">
+        <h3>Tindak Lanjut Admin</h3>
+        <div class="form-grid">
+          ${module.editFields.map((fieldName) => field(key, fieldName, row[fieldName])).join("")}
+        </div>
+      </div>`;
+  }
+
+  if (module.sections?.length) {
+    return module.sections.map((section) => `
+      <div class="full form-section">
+        <h3>${section.title}</h3>
+        <div class="form-grid">
+          ${section.fields.map((fieldName) => field(key, fieldName, row[fieldName])).join("")}
+        </div>
+      </div>
+    `).join("");
+  }
+
+  return module.fields.map((fieldName) => field(key, fieldName, row[fieldName])).join("");
+}
+
+function readonlyField(name, value) {
+  return `
+    <div class="readonly-field ${["address", "notes", "message"].includes(name) ? "full" : ""}">
+      <label>${labels[name] || name}</label>
+      <div class="readonly-value">${fmt(name, value)}</div>
+    </div>`;
 }
 
 function field(key, name, value = "") {
