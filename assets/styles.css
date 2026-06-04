@@ -585,12 +585,19 @@ td {
   border-bottom: 1px solid #f0e8da;
   text-align: left;
   vertical-align: top;
+  font-size: 14px;
+  line-height: 1.45;
 }
 
 th {
   background: #fff7e6;
   color: #4b5563;
-  font-size: 13px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+td {
+  font-weight: 400;
 }
 
 .sort-head {
@@ -602,7 +609,7 @@ th {
   background: transparent;
   color: inherit;
   font: inherit;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
 }
 
@@ -627,8 +634,8 @@ tr:last-child td {
   padding: 4px 9px;
   background: var(--green-soft);
   color: var(--green);
-  font-size: 12px;
-  font-weight: 800;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .badge.gray {
@@ -639,6 +646,13 @@ tr:last-child td {
 .badge.gold {
   background: #fef3c7;
   color: #92400e;
+}
+
+.table-wrap .actions .btn-primary,
+.table-wrap .actions .btn-secondary,
+.table-wrap .actions .btn-danger {
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .empty {
