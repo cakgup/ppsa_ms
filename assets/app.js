@@ -13,8 +13,8 @@ const state = {
 
 const groups = [
   ["Administrasi Web Portal", [["portal_settings", "Pengaturan Portal", "Ready"], ["programs", "Program Portal", "Ready"], ["portal_schedule", "Jadwal Portal", "Ready"], ["donation_programs", "Program Donasi", "Ready"], ["activities", "Kegiatan & Publikasi", "Ready"], ["admissions", "Leads Pendaftaran", "Ready"], ["contact_messages", "Pesan Masuk", "Ready"], ["donation_confirmations", "Konfirmasi Donasi", "Ready"]]],
-  ["Administrasi Operasional Pondok", [["dashboard", "Dashboard", "Ready"], ["branches", "Cabang/Unit", "Ready"], ["students", "Santri", "Ready"], ["guardians", "Wali Santri", "Ready"], ["teachers", "Pengajar/Ustadz", "Ready"], ["classes", "Kelas", "Ready"], ["subjects", "Mata Pelajaran", "Ready"], ["schedules", "Jadwal Pelajaran", "Ready"], ["attendance", "Absensi QR", "Ready"], ["tahfidz", "Tahfidz Monitoring", "Ready"], ["cash", "Buku Kas", "Ready"], ["payments", "SPP/Iuran", "Ready"], ["donors", "Donatur/Infaq", "Ready"], ["letters", "Surat Menyurat", "Ready"], ["library", "Perpustakaan", "Ready"], ["dormitories", "Asrama/Kamar", "Ready"], ["inventory", "Inventaris", "Ready"]]],
-  ["Pengembangan", [["profile", "Profil Lembaga", "Demo"], ["gallery", "Galeri", "Demo"], ["grades", "Nilai/Rapor", "Demo"], ["lms", "LMS Pembelajaran", "Soon"]]],
+  ["Administrasi Operasional Pondok", [["dashboard", "Dashboard", "Ready"], ["branches", "Cabang/Unit", "Ready"], ["students", "Santri", "Ready"], ["guardians", "Wali Santri", "Ready"], ["teachers", "Pengajar/Ustadz", "Ready"], ["classes", "Kelas", "Ready"], ["subjects", "Mata Pelajaran", "Ready"], ["grades", "Nilai/Rapor", "Ready"], ["schedules", "Jadwal Pelajaran", "Ready"], ["attendance", "Absensi QR", "Ready"], ["tahfidz", "Tahfidz Monitoring", "Ready"], ["cash", "Buku Kas", "Ready"], ["payments", "SPP/Iuran", "Ready"], ["donors", "Donatur/Infaq", "Ready"], ["letters", "Surat Menyurat", "Ready"], ["library", "Perpustakaan", "Ready"], ["dormitories", "Asrama/Kamar", "Ready"], ["inventory", "Inventaris", "Ready"]]],
+  ["Pengembangan", [["profile", "Profil Lembaga", "Demo"], ["gallery", "Galeri", "Demo"], ["lms", "LMS Pembelajaran", "Soon"]]],
   ["Sistem", [["users", "User & Role", "Ready"], ["audit", "Audit Log", "Ready"], ["settings", "Pengaturan", "Demo"], ["backup", "Backup", "Soon"]]]
 ];
 
@@ -25,6 +25,7 @@ const meta = {
   teachers: { title: "Pengajar/Ustadz", subtitle: "Data pengajar, kompetensi, dan status aktif", cols: ["id", "teacher_no", "name", "specialization", "phone", "status"], fields: ["teacher_no", "name", "gender", "specialization", "phone", "address", "status"] },
   classes: { title: "Kelas", subtitle: "Kelas formal, tahsin, tahfidz, dan madrasah diniyah", cols: ["id", "name", "level", "homeroom_teacher", "capacity", "status"], fields: ["name", "level", "homeroom_teacher", "capacity", "status"] },
   subjects: { title: "Mata Pelajaran", subtitle: "Kurikulum dan mata pelajaran pesantren", cols: ["id", "name", "category", "teacher_name", "status"], fields: ["name", "category", "teacher_name", "description", "status"] },
+  grades: { title: "Nilai/Rapor", subtitle: "Input nilai santri per mapel, semester, dan tahun ajaran", cols: ["id", "student_name", "class_name", "subject_name", "academic_year", "semester", "final_score", "status"], fields: ["student_name", "class_name", "subject_name", "teacher_name", "academic_year", "semester", "assignment_score", "midterm_score", "final_exam_score", "final_score", "predicate", "teacher_notes", "status"] },
   schedules: { title: "Jadwal Pelajaran", subtitle: "Jadwal belajar mingguan", cols: ["id", "day_name", "time_range", "class_name", "subject_name", "teacher_name"], fields: ["day_name", "time_range", "class_name", "subject_name", "teacher_name", "room"] },
   attendance: { title: "Absensi QR", subtitle: "Absensi kegiatan dan pembelajaran", cols: ["id", "attendance_date", "student_name", "class_name", "status", "method"], fields: ["attendance_date", "student_name", "class_name", "status", "method", "notes"] },
   tahfidz: { title: "Tahfidz Monitoring", subtitle: "Monitoring hafalan, murajaah, dan capaian santri", cols: ["id", "student_name", "surah", "ayah_range", "memorization_status", "score"], fields: ["student_name", "surah", "ayah_range", "memorization_status", "score", "review_date", "teacher_name", "notes"] },
@@ -72,6 +73,7 @@ const labels = {
   guardian_name: "Wali", notes: "Catatan", teacher_no: "NIP/No Ustadz", specialization: "Keahlian", level: "Level",
   homeroom_teacher: "Wali Kelas", capacity: "Kapasitas", category: "Kategori", teacher_name: "Pengajar",
   description: "Deskripsi", day_name: "Hari", time_range: "Jam", subject_name: "Mapel", room: "Ruang",
+  academic_year: "Tahun Ajaran", semester: "Semester", assignment_score: "Nilai Tugas", midterm_score: "Nilai UTS", final_exam_score: "Nilai UAS", final_score: "Nilai Akhir", predicate: "Predikat", teacher_notes: "Catatan Guru",
   attendance_date: "Tanggal", student_name: "Santri", method: "Metode", surah: "Surah", ayah_range: "Ayat",
   memorization_status: "Status Hafalan", score: "Nilai", review_date: "Tanggal Setor", trx_date: "Tanggal",
   type: "Jenis", amount: "Nominal", paid_amount: "Dibayar", period: "Periode", due_date: "Jatuh Tempo",
@@ -111,6 +113,7 @@ const seedDemo = {
   teachers: [{ id: 1, teacher_no: "U-001", name: "Ust. Abdul Malik", specialization: "Tahfidz Al-Qur'an", phone: "0812-4444-9999", status: "aktif" }],
   classes: [{ id: 1, name: "Tahfidz A", level: "Menengah", homeroom_teacher: "Ust. Abdul Malik", capacity: 25, status: "aktif" }],
   subjects: [{ id: 1, name: "Tahfidz", category: "Keagamaan", teacher_name: "Ust. Abdul Malik", status: "aktif" }],
+  grades: [{ id: 1, student_name: "Ahmad Rizqi", class_name: "Tahfidz A", subject_name: "Tahfidz", teacher_name: "Ust. Abdul Malik", academic_year: "2026/2027", semester: "Ganjil", assignment_score: 86, midterm_score: 88, final_exam_score: 90, final_score: 88, predicate: "A", teacher_notes: "Hafalan lancar dan murajaah baik.", status: "terbit" }],
   schedules: [{ id: 1, day_name: "Senin", time_range: "05.30-06.30", class_name: "Tahfidz A", subject_name: "Tahfidz", teacher_name: "Ust. Abdul Malik" }],
   attendance: [{ id: 1, attendance_date: "2026-06-02", student_name: "Ahmad Rizqi", class_name: "Tahfidz A", status: "hadir", method: "QR" }],
   tahfidz: [{ id: 1, student_name: "Ahmad Rizqi", surah: "Al-Mulk", ayah_range: "1-10", memorization_status: "lancar", score: 88, teacher_name: "Ust. Abdul Malik" }],
@@ -358,7 +361,7 @@ async function renderPage(page) {
   state.page = page;
   renderNav();
   if (page === "dashboard") return renderDashboard();
-  if (["lms", "whatsapp", "ai", "mobile", "backup", "settings", "gallery", "grades", "profile"].includes(page)) return renderComing(page);
+  if (["lms", "whatsapp", "ai", "mobile", "backup", "settings", "gallery", "profile"].includes(page)) return renderComing(page);
   return renderCrud(page);
 }
 
@@ -592,12 +595,13 @@ function field(key, name, value = "") {
   if (name === "type" && key === "cash") return select(name, value, ["masuk", "keluar", "Masuk", "Keluar"]);
   if (name === "type" && key === "contents") return select(name, value, ["article", "announcement"]);
   if (name === "content_type" && key === "activities") return select(name, value, ["activity", "article", "announcement"]);
-  if (name === "status") return select(name, value, ["aktif", "nonaktif", "terjadwal", "selesai", "publikasi", "hadir", "izin", "sakit", "alpa", "lunas", "belum_lunas", "terkirim", "draft", "baik", "rusak"]);
+  if (name === "semester") return select(name, value, ["Ganjil", "Genap"]);
+  if (name === "status") return select(name, value, ["aktif", "nonaktif", "terjadwal", "selesai", "publikasi", "terbit", "hadir", "izin", "sakit", "alpa", "lunas", "belum_lunas", "terkirim", "draft", "baik", "rusak"]);
   if (name === "follow_up_status") return select(name, value, ["baru", "diproses", "selesai", "ditutup"]);
   if (name === "is_published") return select(name, value, [1, 0]);
   if (name === "is_active") return select(name, value, [1, 0]);
 
-  const numberFields = ["amount", "paid_amount", "total_donation", "last_donation", "stock", "available", "capacity", "occupied", "score", "purchase_year", "sort_order", "target_amount"];
+  const numberFields = ["amount", "paid_amount", "total_donation", "last_donation", "stock", "available", "capacity", "occupied", "score", "purchase_year", "sort_order", "target_amount", "assignment_score", "midterm_score", "final_exam_score", "final_score"];
   const type = name.includes("date") ? "date" : (numberFields.includes(name) ? "number" : "text");
   return `<div><label>${labels[name] || name}</label><input name="${name}" type="${type}" value="${esc(value)}"></div>`;
 }
