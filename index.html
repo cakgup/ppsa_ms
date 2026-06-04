@@ -10,7 +10,7 @@
   <meta name="theme-color" content="#166534" />
   <title>Pondok Pesantren Sunan Ampel | Portal Resmi PPSA</title>
   <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="stylesheet" href="assets/portal.css?v=20260604e" />
+  <link rel="stylesheet" href="assets/portal.css?v=20260604f" />
 </head>
 <body>
   <header class="site-header">
@@ -204,10 +204,27 @@
       </div>
       <form class="public-form" data-api-form="/public/donation-confirmation">
         <h3>Konfirmasi Donasi</h3>
+        <div class="full donation-account-card">
+          <small class="donation-account-label">Rekening Resmi Donasi</small>
+          <strong>No Rek. BRI a.n. Pondok Pesantren Sunan Ampel</strong>
+          <div class="donation-account-row">
+            <code id="donationAccountNumber">002301003179307</code>
+            <button type="button" class="btn-secondary donation-copy-btn" data-copy-text="002301003179307">Copy</button>
+          </div>
+        </div>
         <label>Nama Donatur<input name="donor_name" placeholder="Tuliskan nama lengkap donatur" required /></label>
         <label>No. WhatsApp<input name="phone" placeholder="Contoh: 08xxxxxxxxxx" /></label>
         <label>Nominal<input type="number" name="amount" placeholder="Contoh: 500000" required /></label>
-        <label>Metode Transfer<input name="method" placeholder="Transfer bank / QRIS" /></label>
+        <label>
+          Metode Transfer
+          <select name="method">
+            <option value="">Pilih metode transfer</option>
+            <option value="Transfer Bank BRI">Transfer Bank BRI</option>
+            <option value="QRIS">QRIS</option>
+            <option value="Tunai">Tunai</option>
+            <option value="Lainnya">Lainnya</option>
+          </select>
+        </label>
         <label class="full">Catatan<textarea name="notes" placeholder="Donasi, infaq, dan wakaf dikhususkan untuk (sebutkan nama almarhum/almarhumah bila ada)"></textarea></label>
         <button class="btn-primary" type="submit">Kirim Konfirmasi</button>
         <p class="form-status" role="status"></p>
@@ -277,6 +294,6 @@
   </footer>
 
   <script src="assets/config.js?v=20260604b"></script>
-  <script src="assets/portal.js?v=20260604d"></script>
+  <script src="assets/portal.js?v=20260604e"></script>
 </body>
 </html>

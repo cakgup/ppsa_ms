@@ -166,6 +166,43 @@ h2 { font-size: clamp(28px, 4vw, 46px); }
   padding: 24px;
 }
 .public-form h3, .public-form .full, .public-form button, .public-form .form-status { grid-column: 1 / -1; }
+.donation-account-card {
+  display: grid;
+  gap: 8px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fffaf0;
+}
+.donation-account-label {
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.donation-account-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.donation-account-card code {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #ffffff;
+  border: 1px solid rgba(214, 188, 123, 0.5);
+  color: var(--ink);
+  font-size: 1rem;
+  font-weight: 800;
+}
+.donation-copy-btn {
+  min-width: 92px;
+}
 label { display: grid; gap: 7px; font-weight: 700; color: #244135; }
 input, select, textarea {
   width: 100%;

@@ -329,9 +329,27 @@ function initDoaLinks() {
   });
 }
 
+function initCopyButtons() {
+  document.querySelectorAll("[data-copy-text]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      const originalText = button.textContent;
+      try {
+        await navigator.clipboard.writeText(button.dataset.copyText || "");
+        button.textContent = "Tersalin";
+      } catch {
+        button.textContent = "Gagal";
+      }
+      window.setTimeout(() => {
+        button.textContent = originalText;
+      }, 1800);
+    });
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   initNav();
   initDoaLinks();
+  initCopyButtons();
   initForms();
   loadPortalContent();
 });
